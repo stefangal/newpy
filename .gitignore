@@ -1,0 +1,13 @@
+# Logs
+logs
+*.log
+
+# VS Code
+.vscode
+__pycache__/
+
+# OSX hidden files
+.DS_Store
+
+# Custom
+hidden
