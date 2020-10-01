@@ -5,7 +5,7 @@ import fileconf as cg
 
 
 MAJOR = 0
-MINOR = 91
+MINOR = 1
 MICRO = 0
 __version__ = f"{MAJOR}.{MINOR}.{MICRO}"
 
@@ -30,7 +30,8 @@ class Run:
         self.config = configparser.ConfigParser()
         self.config.read(self.CONFIG_FILE)
         # Methods to run
-        self.build_folder_structure()
+        if self.config_file_test():
+            self.build_folder_structure()
 
     def project_details(self):
         print(self.config["GITHUB"]["UserName"])
@@ -43,24 +44,26 @@ class Run:
         pass
 
     def config_file_test(self):
-        if self.CONFIG_FILE != "config.ini":
-            return False
-
-    def build_folder_structure(self):
         check = cg.ConfigGenerator()
         if check.config_file_test("config.ini"):
             print("ALL OK\n".rjust(15))
+            return True
+        return False
+        
+
+
+    def build_folder_structure(self):   
         PATH = self.config["PROJECT"]["ProjectPath"]
         FILE = self.config["PROJECT"]["ProjectName"]
         filepath = os.path.join(PATH, FILE)
 
         if PATH and FILE and not os.path.exists(filepath):
             os.mkdir(path=os.path.join(PATH, FILE))
-            if self.config['TODO']['TestFolder'] == 'True':
+            if self.config["TODO"]["TestFolder"] == "True":
                 os.mkdir(path=os.path.join(PATH, "tests"))
-            if self.config['TODO']['DocsFolder'] == 'True':
+            if self.config["TODO"]["DocsFolder"] == "True":
                 os.mkdir(path=os.path.join(PATH, "docs"))
-            
+
             self.logger.info("Folder structure ready")
 
         if os.path.exists(filepath):
@@ -68,7 +71,7 @@ class Run:
                 pass
             with open(os.path.join(PATH, ".gitignore"), "w") as file:
                 pass
-            with open(os.path.join(PATH, ".LICENSE"), "w") as file:
+            with open(os.path.join(PATH, "LICENSE"), "w") as file:
                 pass
             with open(os.path.join(PATH, "requirements.txt"), "w") as file:
                 pass
@@ -79,7 +82,8 @@ class Run:
         return True
 
     def build_file_structure(self):
-        pass        
+        pass
+
 
 if __name__ == "__main__":
     run = Run()

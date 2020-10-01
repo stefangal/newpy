@@ -1,13 +1,32 @@
-# Logs
-logs
+# Logs and databases #
+######################
+log/
 *.log
+*.sql
+*.sqlite
 
-# VS Code
+# VS Code #
+######################
 .vscode
 __pycache__/
 
-# OSX hidden files
+# OS generated files #
+######################
 .DS_Store
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
 
 # Custom
-hidden
+DIR
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.rar
+*.tar
+*.zip
