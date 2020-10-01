@@ -1,3 +1,9 @@
+# main.py
+# Copyright (C) 2020 Stefan Gal (stefan.mail.sk@gmail.com) and contributors
+#
+# This module is part of PyNew and is released under
+# the MIT License: http://www.opensource.org/licenses/mit-license.php
+
 import os
 import logging
 import configparser

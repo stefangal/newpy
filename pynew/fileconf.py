@@ -1,3 +1,9 @@
+# fileconf.py
+# Copyright (C) 2020 Stefan Gal (stefan.mail.sk@gmail.com) and contributors
+#
+# This module is part of PyNew and is released under
+# the MIT License: http://www.opensource.org/licenses/mit-license.php
+
 import os
 import configparser
 
@@ -8,8 +14,15 @@ class ConfigGenerator(object):
             "ProjectName": "project",
             "ProjectPath": "/Users/stefangal/Documents/Coding/Python/Projects",
         },
-        "GITHUB": {"UserName": "stefangal", "GithubRepo": "True", "GitPush": "True",},
-        "TODO": {"DocsFolder": "True", "TestFolder": "True",},
+        "GITHUB": {
+            "UserName": "stefangal",
+            "GithubRepo": "True",
+            "GitPush": "True",
+        },
+        "TODO": {
+            "DocsFolder": "True",
+            "TestFolder": "True",
+        },
         "PYPI": {
             "Author": "Stefan Gal",
             "AuthorEmail": "xxx@xxx.com",
@@ -40,9 +53,12 @@ class ConfigGenerator(object):
         for section in self.content:
             # print(section)
             if not section in config:
-                print(section, "\033[93m \tCorrupt or missing\033[0m".rjust(35))
+                print(section,
+                      "\033[93m \tCorrupt or missing\033[0m".rjust(35))
                 file_OK = False
-                print("\033[91mCannot test further... Please check config file\n")
+                print(
+                    "\033[91mCannot test further... Please check config file\n"
+                )
                 break
             else:
                 print(section, "\033[92m \t\tOK\033[0m".rjust(20))
@@ -57,7 +73,8 @@ class ConfigGenerator(object):
         for section, values in self.content.items():
             for value in values:
                 if value not in config[section]:
-                    print(value.strip(), "\033[93m \tCorrupt or missing\033[0m")
+                    print(value.strip(),
+                          "\033[93m \tCorrupt or missing\033[0m")
                     file_OK = False
                 else:
                     print(value.strip(), "\033[92m \tOK\033[0m".rjust(21))

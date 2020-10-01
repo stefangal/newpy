@@ -1,10 +1,9 @@
-""" 
-API:
-- check REPO NAME is OK
-- create REPO
-- git push to REPO (optional)
-- get LICENSE (optional) - use REST API v3
-"""
+# license.py
+# Copyright (C) 2020 Stefan Gal (stefan.mail.sk@gmail.com) and contributors
+#
+# This module is part of PyNew and is released under
+# the MIT License: http://www.opensource.org/licenses/mit-license.php
+
 import os
 import requests
 import lice
