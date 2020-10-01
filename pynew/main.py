@@ -49,15 +49,18 @@ class Run:
     def build_folder_structure(self):
         check = cg.ConfigGenerator()
         if check.config_file_test("config.ini"):
-            print("all OK ")
+            print("ALL OK\n".rjust(15))
         PATH = self.config["PROJECT"]["ProjectPath"]
         FILE = self.config["PROJECT"]["ProjectName"]
         filepath = os.path.join(PATH, FILE)
 
         if PATH and FILE and not os.path.exists(filepath):
             os.mkdir(path=os.path.join(PATH, FILE))
-            os.mkdir(path=os.path.join(PATH, "tests"))
-            os.mkdir(path=os.path.join(PATH, "docs"))
+            if self.config['TODO']['TestFolder'] == 'True':
+                os.mkdir(path=os.path.join(PATH, "tests"))
+            if self.config['TODO']['DocsFolder'] == 'True':
+                os.mkdir(path=os.path.join(PATH, "docs"))
+            
             self.logger.info("Folder structure ready")
 
         if os.path.exists(filepath):
@@ -76,8 +79,7 @@ class Run:
         return True
 
     def build_file_structure(self):
-        pass
-
+        pass        
 
 if __name__ == "__main__":
     run = Run()

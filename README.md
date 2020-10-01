@@ -2,12 +2,15 @@
 
 ###TODO:
 Open new Python project folder
-   - [ ] **New folders** structure
-   - [ ] File: **README.md** 
+   - [x] **New folders** structure
+   - [x] File: **README.md** 
    - [ ] Add **Python virtual environment** of python interpreter
-   - [ ] File: **.gitignore**
-   - [ ] File: **requiremnets.txt**
-   - [ ] File: **LICENSE**
+   - [x] File: **.gitignore**
+     - [ ] Add some standard content
+   - [x] File: **requiremnets.txt**
+   - [x] File: **LICENSE**
+     - [ ] Add licence type
+     - [ ] [API to get license](https://developer.github.com/v3/licenses/)
    - [ ] New **REPO** on Github
    - [ ] **Git push** on REPO
 

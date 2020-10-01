@@ -8,13 +8,8 @@ class ConfigGenerator(object):
             "ProjectName": "project",
             "ProjectPath": "/Users/stefangal/Documents/Coding/Python/Projects",
         },
-        "GITHUB": {"UserName": "stefangal"},
-        "TODO": {
-            "DocsDirectory": "True",
-            "TestDirecotry": "True",
-            "GithubRepo": "True",
-            "GitPush": "True",
-        },
+        "GITHUB": {"UserName": "stefangal", "GithubRepo": "True", "GitPush": "True",},
+        "TODO": {"DocsFolder": "True", "TestFolder": "True",},
         "PYPI": {
             "Author": "Stefan Gal",
             "AuthorEmail": "xxx@xxx.com",
@@ -67,7 +62,6 @@ class ConfigGenerator(object):
                 else:
                     print(value.strip(), "\033[92m \tOK\033[0m".rjust(21))
 
-        print(file_OK)
         return file_OK
 
 
