@@ -90,6 +90,18 @@ class Run:
     def build_file_structure(self):
         pass
 
+    def build_license(self):
+        pass
+
+    def build_setuppy(self):
+        pass
+
+    def build_readmemd(self):
+        pass
+
+    def build_requirementstxt(self):
+        pass
+
 
 if __name__ == "__main__":
     run = Run()
