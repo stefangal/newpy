@@ -5,35 +5,35 @@
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 import os
-import requests
-import lice
+import shutil
 
 
-class LicenseGenerator:
-    def connect_api(self):
-        url = "https://developer.github.com/v3/licenses"
-        con = requests.get(url)
-        print(con.content)
-
+class NewLicense:
     def download_license(self, path, lictype):
+        """
+        Choose from: 
+         'afl3', 'agpl3', 'apache', 'bsd2', 'bsd3', 'cc0', 'cc_by', 'cc_by_nc', 
+         'cc_by_nc_nd', 'cc_by_nc_sa', 'cc_by_nd', 'cc_by_sa', 'cddl', 'epl', 
+         'gpl2', 'gpl3', 'isc', 'lgpl', 'mit', 'mpl', 'wtfpl', 'zlib'
+        """
         os.system(f"lice {lictype} -f {path}/LICENSE")
 
-    def license_listing(self, file):
-        with open(file, "r") as licfile:
-            lic_list = licfile.readlines()
-            ls = [x.rstrip("\n").replace("\\", "\\t\\t\\t") for x in lic_list]
-            print(
-                "\nAVAILABLE LICENSES [use abbrevation for the config.ini file"
-            )
-            print(59 * "#")
-            for row in ls:
-                lic, abrev = row.split(";")
-                print("" + lic + "\033[94m" + "\r\t\t\t\t\t\t\t" + abrev +
-                      "\033[0m")
+    def download(self, dst, lictype):
+        """
+        Generate from templace and download to the path.
+        """
+
+        FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)) + "/templates")
+
+        if os.path.exists(FOLDER):
+            for template_file in os.listdir(FOLDER):
+                if lictype in template_file:
+                    shutil.copy(os.path.join(FOLDER, template_file), dst)
+                    os.rename(os.path.join(dst, template_file), "LICENSE")
 
 
 if __name__ == "__main__":
-    # license = LicenseGenerator()
-    # license.license_listing("pynew/licenses.db")
-    # license.download_license(
-        # "/Users/stefangal/Documents/Coding/Python/Projects/PyNew/DIR", 'mit')
+    license = NewLicense()
+
+    license.download(
+        "/Users/stefangal/Documents/Coding/Python/Projects/PyNew/DIR", 'agpl3')

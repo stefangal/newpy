@@ -11,7 +11,9 @@ from shutil import copyfile
 
 
 class MissingSectionError(ParsingError):
-    """Raised when a key-value pair is found before any section header."""
+    """
+    Raised when a key-value pair is found before any section header.
+    """
     def __init__(self, filename, line):
         Error.__init__(
             self, 'File contains no section headers.\nfile: %r,\n%r' %
@@ -21,34 +23,9 @@ class MissingSectionError(ParsingError):
         self.args = (filename, line)
 
 
-class ConfigGenerator:
+class ConfigBuildCheck:
     """
-    =========== debug ===========
-    content = {
-        "PROJECT": {
-            "ProjectName": "project",
-            "ProjectPath": "/Users/stefangal/Documents/Coding/Python/Projects",
-        },
-        "GITHUB": {
-            "UserName": "stefangal",
-            "GithubRepo": "True",
-            "GitPush": "True",
-            "GitToken": "8a35fdf7e3cf5a2e3dd5934a732faa776dfd6702",
-            "Private": "True"
-        },
-        "TODO": {
-            "DocsFolder": "True",
-            "TestFolder": "True",
-        },
-        "PYPI": {
-            "Author": "Stefan Gal",
-            "AuthorEmail": "xxx@xxx.com",
-            "Description": "xxx",
-            "Version": "0.0.1",
-            "Release": "False",
-        },
-    }
-    =========== debug ===========
+    For checking and building the config.ini file
     """
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
     CONFIG_FILE_PATH = os.path.join(ROOT_DIR, 'config.ini')
@@ -115,7 +92,7 @@ class ConfigGenerator:
 
 
 if __name__ == "__main__":
-    run = ConfigGenerator()
+    cbc = ConfigBuildCheck()
     # run.new_config_file()
-    run.check_sections_ok()
-    run.check_options_ok()
+    cbc.check_sections_ok()
+    cbc.check_options_ok()
