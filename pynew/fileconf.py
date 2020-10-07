@@ -4,11 +4,26 @@
 # This module is part of PyNew and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
+from configparser import ConfigParser, Error, ParsingError
 import os
-import configparser
+from colorama import init, Fore, Style
+from shutil import copyfile
 
 
-class ConfigGenerator(object):
+class MissingSectionError(ParsingError):
+    """Raised when a key-value pair is found before any section header."""
+    def __init__(self, filename, line):
+        Error.__init__(
+            self, 'File contains no section headers.\nfile: %r,\n%r' %
+            (filename, line))
+        self.source = filename
+        self.line = line
+        self.args = (filename, line)
+
+
+class ConfigGenerator:
+    """
+    =========== debug ===========
     content = {
         "PROJECT": {
             "ProjectName": "project",
@@ -18,6 +33,8 @@ class ConfigGenerator(object):
             "UserName": "stefangal",
             "GithubRepo": "True",
             "GitPush": "True",
+            "GitToken": "8a35fdf7e3cf5a2e3dd5934a732faa776dfd6702",
+            "Private": "True"
         },
         "TODO": {
             "DocsFolder": "True",
@@ -31,58 +48,74 @@ class ConfigGenerator(object):
             "Release": "False",
         },
     }
+    =========== debug ===========
+    """
+    ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+    CONFIG_FILE_PATH = os.path.join(ROOT_DIR, 'config.ini')
+    CONFIG_TEMPLATE_FILE_PATH = os.path.join(ROOT_DIR, 'templ_config.ini')
 
-    def new_config_file(self, path):
-        config = configparser.ConfigParser()
-        with open(os.path.join(path, "config_tmp.ini"), "w") as configfile:
-            for section, values in self.content.items():
-                config[section] = {}
-                for key, value in values.items():
-                    config[section][key] = value
-            config.write(configfile)
+    def __init__(self):
+        init()
+        self.template_config = ConfigParser()
+        self.template_config.read(self.CONFIG_TEMPLATE_FILE_PATH)
+        self.config = ConfigParser()
+        self.config.read(self.CONFIG_FILE_PATH)
 
-    def config_file_test(self, file):
-        file_OK = True
-        config = configparser.ConfigParser()
-        config.read(file)
+    def new_config_file(self):
+        """
+        Generate new config.ini file.
+        """
+        try:
+            copyfile(self.CONFIG_TEMPLATE_FILE_PATH, self.CONFIG_FILE_PATH)
+            print(f"\n{Fore.GREEN} + CREATED: {self.CONFIG_FILE_PATH}")
+        except Exception as e:
+            print(
+                f"\n{Fore.RED} + FAILED TO CREATE: {self.CONFIG_FILE_PATH}\n")
+            raise e
+        finally:
+            print(Style.RESET_ALL)
 
-        print(9 * "_", end="")
-        print("Sections", end="")
-        print(9 * "_")
-        # sections available correctly
-        for section in self.content:
-            # print(section)
-            if not section in config:
-                print(section,
-                      "\033[93m \tCorrupt or missing\033[0m".rjust(35))
-                file_OK = False
-                print(
-                    "\033[91mCannot test further... Please check config file\n"
-                )
-                break
-            else:
-                print(section, "\033[92m \t\tOK\033[0m".rjust(20))
-        if not file_OK:
-            return file_OK
+    def check_sections_ok(self) -> bool:
+        """
+        Check sections available compared to the template in the config file.
+        """
+        missing_section, missing_line_nr = [], []
+        for section in self.template_config.sections():
+            if section not in self.config.sections():
+                with open(self.CONFIG_TEMPLATE_FILE_PATH, 'r') as file:
+                    for line_nr, line in enumerate(file, 1):
+                        if section in line:
+                            missing_section.append(section)
+                            missing_line_nr.append(line_nr)
+        if missing_section:
+            raise MissingSectionError(
+                self.CONFIG_FILE_PATH,
+                f'{Fore.RED} + Missing section: {missing_section} on lines {missing_line_nr}'
+            )
+        return True
 
-        print(11 * "_", end="")
-        print("Keys", end="")
-        print(11 * "_")
+    def check_options_ok(self) -> bool:
+        """
+        Check options available compared to the template in the config file.
+        """
+        structure, missing_option = [], []
+        file_ok = True
+        for section in self.config.sections():
+            for option in self.config.options(section):
+                structure.append((section, option))
+        for section in self.template_config.sections():
+            for option in self.template_config.options(section):
+                if (section, option) not in structure:
+                    file_ok = False
+                    missing_option.append(str(section + "->" + option))
+        if not file_ok:
+            raise Error(
+                f"{Fore.RED} + Missing or corrupt option: {missing_option}")
+        return file_ok
 
-        # keys available correctly
-        for section, values in self.content.items():
-            for value in values:
-                if value not in config[section]:
-                    print(value.strip(),
-                          "\033[93m \tCorrupt or missing\033[0m")
-                    file_OK = False
-                else:
-                    print(value.strip(), "\033[92m \tOK\033[0m".rjust(21))
 
-        return file_OK
-
-
-# if __name__ == "__main__":
-#     run = ConfigGenerator()
-#     # run.new_config_file('.')
-#     run.config_file_test("config_tmp.ini", "config.ini")
+if __name__ == "__main__":
+    run = ConfigGenerator()
+    # run.new_config_file()
+    run.check_sections_ok()
+    run.check_options_ok()
