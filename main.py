@@ -9,8 +9,7 @@ import logging
 import os
 import re
 
-from pynew.fileconf import ConfigGenerator
-
+from pynew.config_bc import ConfigBuildCheck
 
 MAJOR = 0
 MINOR = 1
@@ -28,13 +27,12 @@ class Run:
     > Run based on config.ini file
     > Generate output
     """
-    CONFIG_FILE = "config.ini"
+    CONFIG_FILE = "pynew/config.ini"
 
     config = configparser.ConfigParser()
     config.read(CONFIG_FILE)
-
     PATH = config["PROJECT"]["ProjectPath"]
-    FILE = config["PROJECT"]["ProjectName"]
+    FILE = config["PROJECT"]["projectname"]
     PROJECT_PATH = os.path.join(PATH, FILE)
 
     def __init__(self):
@@ -52,6 +50,19 @@ class Run:
         # Methods to run ON DEVELOPMENT stage
         if self.config_file_test():
             self.build_folder_structure()
+
+    def get_projectname(self):
+        config = configparser.ConfigParser()
+        config.read(self.CONFIG_FILE)       
+        FILE = config["PROJECT"]["projectname"]
+        return FILE
+        
+    def get_projectpath(self):
+        config = configparser.ConfigParser()
+        config.read(self.CONFIG_FILE)       
+        PATH = config["PROJECT"]["projectpath"]
+        return PATH
+
 
     def project_in_config_check(self):
         if self.PATH and self.FILE:
@@ -82,7 +93,7 @@ class Run:
         pass
 
     def config_file_test(self):
-        check = ConfigGenerator()
+        check = ConfigBuildCheck()
         if check.config_file_test("config.ini"):
             print("ALL OK\n".rjust(15))
             return True
@@ -109,7 +120,7 @@ class Run:
             pass
 
     def build_readme_md(self):
-        with open(os.path.join(self.PATH, "README.MD"), "w") as file:
+        with open(os.path.join(self.PATH, "README.md"), "w") as file:
             pass
 
     def build_requirements_txt(self):
