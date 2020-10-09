@@ -1,4 +1,6 @@
+
 ## PERSONAL AUTOMATION PROGRAM [CLI]
+
 
 ### Description:
 Open new Python project by building the structure and prepare files automatically.
