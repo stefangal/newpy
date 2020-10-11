@@ -4,12 +4,15 @@
 # This module is part of PyNew and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
-import configparser
-import logging
 import os
 import re
+import logging
+import configparser
 
 from pynew.config_bc import ConfigBuildCheck
+from pynew.license import NewLicense
+# from pynew.setup_manger import PrepareSetup
+from pynew.repo import OpenRepo
 
 MAJOR = 0
 MINOR = 1
@@ -20,20 +23,13 @@ logger = logging.getLogger("new_project")
 logger.setLevel(logging.DEBUG)
 
 
-class Run:
+class Pynew:
     """
     This is the main logic class.
     > Overall check before run
     > Run based on config.ini file
     > Generate output
     """
-    CONFIG_FILE = "pynew/config.ini"
-
-    config = configparser.ConfigParser()
-    config.read(CONFIG_FILE)
-    PATH = config["PROJECT"]["ProjectPath"]
-    FILE = config["PROJECT"]["projectname"]
-    PROJECT_PATH = os.path.join(PATH, FILE)
 
     def __init__(self):
         # Logger
@@ -51,38 +47,11 @@ class Run:
         if self.config_file_test():
             self.build_folder_structure()
 
-    def get_projectname(self):
-        config = configparser.ConfigParser()
-        config.read(self.CONFIG_FILE)       
-        FILE = config["PROJECT"]["projectname"]
-        return FILE
-        
-    def get_projectpath(self):
-        config = configparser.ConfigParser()
-        config.read(self.CONFIG_FILE)       
-        PATH = config["PROJECT"]["projectpath"]
-        return PATH
 
 
-    def project_in_config_check(self):
-        if self.PATH and self.FILE:
-            print(
-                f"\033[93mSTATUS:\033[0m Project folder:\033[94m...{self.PATH[-10:]}/{self.FILE}\033[0m OK"
-            )
-            return True
-        self.logger.error('Something wrong with config.ini PROJECT section!!!')
-        return False
+    
 
-    def pypi_in_config_check(self):
-        author = self.config['PYPI']['Author']
-        author_email = self.config['PYPI']['AuthorEmail']
-        _pattern_email = "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
-        email_format = re.search(_pattern_email, author_email)
-        description = self.config['PYPI']['Description']
-        version = self.config['PYPI']['Version']
-        release = self.config['PYPI']['Release']
-        return all([author, email_format, description, version, release])
-
+    
     def project_details(self):
         print(self.config["GITHUB"]["UserName"])
 
@@ -92,12 +61,7 @@ class Run:
     def pypi(self):
         pass
 
-    def config_file_test(self):
-        check = ConfigBuildCheck()
-        if check.config_file_test("config.ini"):
-            print("ALL OK\n".rjust(15))
-            return True
-        return False
+
 
     def build_folder_structure(self):
         if self.PATH and self.FILE and not os.path.exists(self.PROJECT_PATH):
@@ -133,4 +97,4 @@ class Run:
 
 
 if __name__ == "__main__":
-    run = Run()
+    run = Pynew()

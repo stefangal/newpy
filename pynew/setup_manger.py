@@ -23,8 +23,8 @@ class PrepareSetup(Run):
             author_git = sp.check_output("git config --get user.name".split())
             author = author_git.decode('utf-8').strip()
             year = str(datetime.date.today().year)
-            project_name = self.get_projectname()
-            project_path = self.get_projectpath()
+            project_name = self._get_projectname()
+            project_path = self._get_projectpath()
             email = sp.check_output("git config --get user.email".split()).decode('utf-8').strip()
   
             return {
@@ -55,5 +55,5 @@ class PrepareSetup(Run):
 
 if __name__ == "__main__":
     ps = PrepareSetup()
-    # ps.get_personaldata()
-    ps.fill_setup_template()
+    print(ps.get_personaldata())
+    # ps.fill_setup_template()

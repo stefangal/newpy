@@ -4,8 +4,9 @@
 # This module is part of PyNew and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
-from configparser import ConfigParser, Error, ParsingError
+from configparser import ConfigParser, Error, MissingSectionHeaderError, ParsingError
 import os
+import re
 from colorama import init, Fore, Style
 from shutil import copyfile
 
@@ -24,9 +25,7 @@ class MissingSectionError(ParsingError):
 
 
 class ConfigBuildCheck:
-    """
-    For checking and building the config.ini file
-    """
+    """For checking and building the config.ini file"""
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
     CONFIG_FILE_PATH = os.path.join(ROOT_DIR, 'config.ini')
     CONFIG_TEMPLATE_FILE_PATH = os.path.join(ROOT_DIR, 'templ_config.ini')
@@ -39,9 +38,7 @@ class ConfigBuildCheck:
         self.config.read(self.CONFIG_FILE_PATH)
 
     def new_config_file(self):
-        """
-        Generate new config.ini file.
-        """
+        """Generate new config.ini file."""
         try:
             copyfile(self.CONFIG_TEMPLATE_FILE_PATH, self.CONFIG_FILE_PATH)
             print(f"\n{Fore.GREEN} + CREATED: {self.CONFIG_FILE_PATH}")
@@ -53,9 +50,7 @@ class ConfigBuildCheck:
             print(Style.RESET_ALL)
 
     def check_sections_ok(self) -> bool:
-        """
-        Check sections available compared to the template in the config file.
-        """
+        """Check sections available compared to the template in the config file."""
         missing_section, missing_line_nr = [], []
         for section in self.template_config.sections():
             if section not in self.config.sections():
@@ -72,9 +67,7 @@ class ConfigBuildCheck:
         return True
 
     def check_options_ok(self) -> bool:
-        """
-        Check options available compared to the template in the config file.
-        """
+        """Check options available compared to the template in the config file."""
         structure, missing_option = [], []
         file_ok = True
         for section in self.config.sections():
@@ -91,8 +84,59 @@ class ConfigBuildCheck:
         return file_ok
 
 
+class ConfigRead:
+
+    _CONFIG_FILE = "pynew/config.ini"
+
+    def __init__(self):
+        self.config = ConfigParser()
+        try:
+            self.config.read(self._CONFIG_FILE)
+        except Exception:
+            raise Error(f"Failed to read the configuration file!")
+
+    def config_file_test(self):
+        # 'pynew/config.ini' is available?
+        if os.path.exists(self._CONFIG_FILE):
+            print("Configuration file 'config.ini' available\n".rjust(15))
+            return True
+        return False
+
+    def project_in_config_check(self):
+        self.PATH = self.config["PROJECT"]["projectpath"]
+        self.FILE = self.config["PROJECT"]["projectname"]
+        self.PROJECT_PATH = os.path.join(self.PATH, self.FILE)
+        if os.path.exists(self.PROJECT_PATH):
+            return True
+        return False
+
+    def pypi_in_config_check(self):
+        author = self.config['PYPI']['Author']
+        author_email = self.config['PYPI']['AuthorEmail']
+        _pattern_email = "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
+        email_format = re.search(_pattern_email, author_email)
+        description = self.config['PYPI']['Description']
+        version = self.config['PYPI']['Version']
+        release = self.config['PYPI']['Release']
+        return all([author, email_format, description, version, release])
+
+    @property
+    def get_projectname(self):
+        return self.FILE if self.FILE else None
+
+    @property
+    def get_projectpath(self):
+        return self.PATH if self.PATH else None
+
+    @property
+    def get_project_folder(self):
+        return os.path.join(self.get_projectpath, self.get_projectname)
+
+
 if __name__ == "__main__":
-    cbc = ConfigBuildCheck()
+    # cbc = ConfigBuildCheck()
     # run.new_config_file()
-    cbc.check_sections_ok()
-    cbc.check_options_ok()
+    # cbc.check_sections_ok()
+    # cbc.check_options_ok()
+    cr = ConfigRead()
+    cr.config_file_test()
