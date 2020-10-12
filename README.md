@@ -1,5 +1,8 @@
+<h1 align="center"> NewPy </h1>
 
-## PERSONAL AUTOMATION PROGRAM [CLI]
+<h3 align="center"> 
+PERSONAL AUTOMATION PROGRAM [CLI]
+</h3>
 
 
 ### Description:
@@ -44,3 +47,9 @@ python startnew
 ```
 
 This is the app structure given all the actually available features.
+
+## Contributors ##
+
+Feel free to contribute and register yourself in AUTHORS.md
+
+

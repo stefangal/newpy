@@ -1,10 +1,9 @@
 # license.py
 # Copyright (C) 2020 Stefan Gal (stefan.mail.sk@gmail.com) and contributors
 #
-# This module is part of PyNew and is released under
+# This module is part of NewPy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
-import os
 import subprocess as sp
 
 
@@ -22,15 +21,12 @@ class NewLicense:
          'cc_by_nc_nd', 'cc_by_nc_sa', 'cc_by_nd', 'cc_by_sa', 'cddl', 'epl', 
          'gpl2', 'gpl3', 'isc', 'lgpl', 'mit', 'mpl', 'wtfpl', 'zlib'
         """
-        FOLDER = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)) + "/templates")
-        if os.path.exists(FOLDER):
-            sp.Popen(f"lice {lictype} -f {dst}/LICENSE", shell=True).wait()
-            print(f"Download of {lictype} license successful!")
-            print(f"LICENSE save in folder: {dst}\n")
+        sp.Popen(f"lice {lictype} -f {dst}/LICENSE", shell=True).wait()
+        print(f"Download of {lictype} license successful!")
+        print(f"LICENSE save in folder: {dst}\n")
 
 
 if __name__ == "__main__":
     license = NewLicense()
     license.download(
-        "/Users/stefangal/Documents/Coding/Python/Projects/PyNew/DIR", 'mit')
+        "/Users/stefangal/Documents/Coding/Python/Projects/Newpy/DIR", 'mit')

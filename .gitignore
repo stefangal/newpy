@@ -20,7 +20,7 @@ Thumbs.db
 
 # Custom
 DIR
-pynew/mypy.ini
+newpy/mypy.ini
 
 # Packages #
 ############

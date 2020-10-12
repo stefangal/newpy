@@ -1,3 +1,10 @@
+# setup_manager.py
+# Copyright (C) 2020 Stefan Gal (stefan.mail.sk@gmail.com) and contributors
+#
+# This module is part of NewPy and is released under
+# the MIT License: http://www.opensource.org/licenses/mit-license.php
+
+# https://pygithub.readthedocs.io/en/latest/github_objects/Organization.html
 
 import subprocess as sp
 import datetime

@@ -1,7 +1,7 @@
 # main.py
 # Copyright (C) 2020 Stefan Gal (stefan.mail.sk@gmail.com) and contributors
 #
-# This module is part of PyNew and is released under
+# This module is part of NewPy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 import os
@@ -9,10 +9,10 @@ import re
 import logging
 import configparser
 
-from pynew.config_bc import ConfigBuildCheck
-from pynew.license import NewLicense
-# from pynew.setup_manger import PrepareSetup
-from pynew.repo import OpenRepo
+from newpy.config_bc import ConfigBuildCheck
+from newpy.license import NewLicense
+# from newpy.setup_manger import PrepareSetup
+from newpy.repo import OpenRepo
 
 MAJOR = 0
 MINOR = 1
@@ -23,7 +23,7 @@ logger = logging.getLogger("new_project")
 logger.setLevel(logging.DEBUG)
 
 
-class Pynew:
+class Newpy:
     """
     This is the main logic class.
     > Overall check before run
@@ -97,4 +97,4 @@ class Pynew:
 
 
 if __name__ == "__main__":
-    run = Pynew()
+    run = Newpy()

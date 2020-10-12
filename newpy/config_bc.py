@@ -1,7 +1,7 @@
 # fileconf.py
 # Copyright (C) 2020 Stefan Gal (stefan.mail.sk@gmail.com) and contributors
 #
-# This module is part of PyNew and is released under
+# This module is part of NewPy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 from configparser import ConfigParser, Error, MissingSectionHeaderError, ParsingError
@@ -86,7 +86,7 @@ class ConfigBuildCheck:
 
 class ConfigRead:
 
-    _CONFIG_FILE = "pynew/config.ini"
+    _CONFIG_FILE = "newpy/config.ini"
 
     def __init__(self):
         self.config = ConfigParser()
@@ -96,7 +96,7 @@ class ConfigRead:
             raise Error(f"Failed to read the configuration file!")
 
     def config_file_test(self):
-        # 'pynew/config.ini' is available?
+        # 'newpy/config.ini' is available?
         if os.path.exists(self._CONFIG_FILE):
             print("Configuration file 'config.ini' available\n".rjust(15))
             return True
@@ -135,7 +135,7 @@ class ConfigRead:
 
 if __name__ == "__main__":
     # cbc = ConfigBuildCheck()
-    # run.new_config_file()
+    # run.new_config_fi0jnuih76tle()
     # cbc.check_sections_ok()
     # cbc.check_options_ok()
     cr = ConfigRead()
