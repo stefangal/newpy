@@ -16,8 +16,12 @@ class MissingConfigFileError(ConfigFileErrors):
     """
     Exception for the project when the config.ini file is missing.
     """
-    pass
+    def __init__(self, file) -> None:
+        self.file = file
 
+    def __str__(self) -> str:
+        return f"File config.ini is missing or filename is incorrect! Check {self.file} !"
+    
 
 class MissingSectionError(ConfigFileErrors):
     """

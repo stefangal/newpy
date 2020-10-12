@@ -47,9 +47,7 @@ class Newpy:
         if self.config_file_test():
             self.build_folder_structure()
 
-
-
-    
+ 
 
     
     def project_details(self):
@@ -75,25 +73,7 @@ class Newpy:
 
         return True
 
-    def build_license(self):
-        with open(os.path.join(self.PATH, "LICENSE"), "w") as file:
-            pass
 
-    def build_setup_py(self):
-        with open(os.path.join(self.PATH, "setup.py"), "w") as file:
-            pass
-
-    def build_readme_md(self):
-        with open(os.path.join(self.PATH, "README.md"), "w") as file:
-            pass
-
-    def build_requirements_txt(self):
-        with open(os.path.join(self.PATH, "requirements.txt"), "w") as file:
-            pass
-
-    def build_gitignore(self):
-        with open(os.path.join(self.PATH, ".gitignore"), "w") as file:
-            pass
 
 
 if __name__ == "__main__":

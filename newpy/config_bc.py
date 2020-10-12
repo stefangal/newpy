@@ -4,14 +4,17 @@
 # This module is part of NewPy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
-from configparser import ConfigParser, Error, MissingSectionHeaderError, ParsingError
-import os
-import re
+from configparser import ConfigParser, Error, ParsingError
 from colorama import init, Fore, Style
 from shutil import copyfile
+import os
+import re
+
+from errors import MissingConfigFileError, MissingSectionError, MissingOptionError
+# from builder import Builder
 
 
-class MissingSectionError(ParsingError):
+class MissingFileSectionError(ParsingError):
     """
     Raised when a key-value pair is found before any section header.
     """
@@ -60,7 +63,7 @@ class ConfigBuildCheck:
                             missing_section.append(section)
                             missing_line_nr.append(line_nr)
         if missing_section:
-            raise MissingSectionError(
+            raise MissingFileSectionError(
                 self.CONFIG_FILE_PATH,
                 f'{Fore.RED} + Missing section: {missing_section} on lines {missing_line_nr}'
             )
@@ -85,30 +88,36 @@ class ConfigBuildCheck:
 
 
 class ConfigRead:
+    """
+    Read in the config.ini data.
+    """
 
-    _CONFIG_FILE = "newpy/config.ini"
+    _CONFIG_FILE = "config/config.ini"
 
     def __init__(self):
         self.config = ConfigParser()
-        try:
-            self.config.read(self._CONFIG_FILE)
-        except Exception:
-            raise Error(f"Failed to read the configuration file!")
+        if not len(self.config.read(self._CONFIG_FILE)):
+            raise MissingConfigFileError(self._CONFIG_FILE)
 
-    def config_file_test(self):
-        # 'newpy/config.ini' is available?
-        if os.path.exists(self._CONFIG_FILE):
-            print("Configuration file 'config.ini' available\n".rjust(15))
-            return True
-        return False
+    # def config_file_test(self):
+    #     # 'newpy/config.ini' is available?
+    #     if os.path.exists(self._CONFIG_FILE):
+    #         print("Configuration file 'config.ini' available\n".rjust(15))
+    #         return True
+    #     else:
+    #         raise MissingConfigFileError(self._CONFIG_FILE)
+    #         # raise MissingConfigFileError("Config.ini file is missing or filename is incorrect! Check for config/config.ini")
 
     def project_in_config_check(self):
+
         self.PATH = self.config["PROJECT"]["projectpath"]
         self.FILE = self.config["PROJECT"]["projectname"]
         self.PROJECT_PATH = os.path.join(self.PATH, self.FILE)
+        print(self.PROJECT_PATH)
         if os.path.exists(self.PROJECT_PATH):
             return True
-        return False
+        # builder = Builder(self.PROJECT_PATH, self.config)
+        # builder.folder_structure()
 
     def pypi_in_config_check(self):
         author = self.config['PYPI']['Author']
@@ -121,16 +130,16 @@ class ConfigRead:
         return all([author, email_format, description, version, release])
 
     @property
-    def get_projectname(self):
+    def get_project_name(self):
         return self.FILE if self.FILE else None
 
     @property
-    def get_projectpath(self):
+    def get_project_path(self):
         return self.PATH if self.PATH else None
 
     @property
     def get_project_folder(self):
-        return os.path.join(self.get_projectpath, self.get_projectname)
+        return os.path.join(self.get_project_path, self.get_project_name)
 
 
 if __name__ == "__main__":
@@ -139,4 +148,4 @@ if __name__ == "__main__":
     # cbc.check_sections_ok()
     # cbc.check_options_ok()
     cr = ConfigRead()
-    cr.config_file_test()
+    cr.project_in_config_check()

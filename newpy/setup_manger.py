@@ -12,44 +12,44 @@ import configparser
 import sys
 import os
 
+from colorama.initialise import init
+
+from config_bc import ConfigRead
+
 PACKAGE_PARENT = '..'
 SCRIPT_DIR = os.path.dirname(
     os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
-from main import Run
+# from main import Run
 
 
-class PrepareSetup(Run):
-    def __init__(self):
-        config = configparser.ConfigParser()
-        config.read(self.CONFIG_FILE)
+class PrepareSetup:
+    def __init__(self, _conf):        
+        self.conf_read = _conf
+        self.PROJECT_PATH = None
+        self.FILE = None
 
-    def get_personaldata(self) -> dict:
+    def _get_personaldata(self) -> dict:
         try:
             author_git = sp.check_output("git config --get user.name".split())
             author = author_git.decode('utf-8').strip()
             year = str(datetime.date.today().year)
-            project_name = self._get_projectname()
-            project_path = self._get_projectpath()
             email = sp.check_output("git config --get user.email".split()).decode('utf-8').strip()
   
             return {
                 "author": author,
                 "year": year,
-                "projectname": project_name,
-                "projectpath":project_path,
                 "email": email
             }
         except Exception:
             pass
 
-    def fill_setup_template(self):
-        git_data = self.get_personaldata()
-        PATH = git_data.get('projectpath')
-
-        with open("pynew/templ_setup.py", 'r') as template_setupfile:
-            with open(os.path.join(PATH, "setup.py"), 'w') as new_setupfile:
+    def fill_setup_template(self, projectpath):
+        git_data = self._get_personaldata()
+ 
+        with open("newpy/templ_setup.py", 'r') as template_setupfile:
+            with open(os.path.join(projectpath, "setup.py"), 'w') as new_setupfile:
                 for line in template_setupfile.readlines():                    
                     if "example-pkg-YOUR-USERNAME-HERE" in line:
                         line = line.replace("YOUR-USERNAME-HERE", git_data.get('author'))
