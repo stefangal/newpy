@@ -5,12 +5,12 @@
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 from configparser import ConfigParser, Error, ParsingError
-from colorama import init, Fore, Style
 from shutil import copyfile
 import os
 import re
+from colorama import init, Fore, Style
 
-from .errors import MissingConfigFileError, MissingSectionError, MissingOptionError
+from errors import MissingConfigFileError, MissingSectionError, MissingOptionError
 
 
 class MissingFileSectionError(ParsingError):
@@ -18,7 +18,7 @@ class MissingFileSectionError(ParsingError):
     Raised when a key-value pair is found before any section header.
     """
     def __init__(self, filename, line):
-        Error.__init__(
+        super().__init__(
             self, 'File contains no section headers.\nfile: %r,\n%r' %
             (filename, line))
         self.source = filename
@@ -28,26 +28,26 @@ class MissingFileSectionError(ParsingError):
 
 class ConfigBuildCheck:
     """For checking and building the config.ini file"""
-    ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-    CONFIG_FILE_PATH = os.path.join(ROOT_DIR, 'config.ini')
-    CONFIG_TEMPLATE_FILE_PATH = os.path.join(ROOT_DIR, 'templ_config.ini')
-
     def __init__(self):
         init()
+        self.root_dir = os.path.dirname(os.path.abspath(__file__))
+        self.config_file_path = os.path.join(self.root_dir, 'config.ini')
+        self.config_template_file_path = os.path.join(self.root_dir,
+                                                      'templ_config.ini')
         self.template_config = ConfigParser()
-        self.template_config.read(self.CONFIG_TEMPLATE_FILE_PATH)
+        self.template_config.read(self.config_template_file_path)
         self.config = ConfigParser()
-        self.config.read(self.CONFIG_FILE_PATH)
+        self.config.read(self.config_file_path)
 
     def new_config_file(self):
         """Generate new config.ini file."""
         try:
-            copyfile(self.CONFIG_TEMPLATE_FILE_PATH, self.CONFIG_FILE_PATH)
-            print(f"\n{Fore.GREEN} + CREATED: {self.CONFIG_FILE_PATH}")
-        except Exception as e:
+            copyfile(self.config_template_file_path, self.config_file_path)
+            print(f"\n{Fore.GREEN} + CREATED: {self.config_file_path}")
+        except Exception as exc:
             print(
-                f"\n{Fore.RED} + FAILED TO CREATE: {self.CONFIG_FILE_PATH}\n")
-            raise e
+                f"\n{Fore.RED} + FAILED TO CREATE: {self.config_file_path}\n")
+            raise exc
         finally:
             print(Style.RESET_ALL)
 
@@ -56,7 +56,7 @@ class ConfigBuildCheck:
         missing_section, missing_line_nr = [], []
         for section in self.template_config.sections():
             if section not in self.config.sections():
-                with open(self.CONFIG_TEMPLATE_FILE_PATH, 'r') as file:
+                with open(self.config_template_file_path, 'r') as file:
                     for line_nr, line in enumerate(file, 1):
                         if section in line:
                             missing_section.append(section)
@@ -92,24 +92,22 @@ class ConfigRead:
 
     def __init__(self):
         self.config = ConfigParser()
-        if not len(self.config.read(self._CONFIG_FILE)):
+        self.path = self.config["PROJECT"]["projectpath"]
+        self.file = self.config["PROJECT"]["projectname"]
+        self.project_path = os.path.join(self.path, self.file)
+
+        if len(self.config.read(self._CONFIG_FILE)) == []:
             raise MissingConfigFileError(self._CONFIG_FILE)
 
-
     def project_in_config_check(self):
-        self.PATH = self.config["PROJECT"]["projectpath"]
-        self.FILE = self.config["PROJECT"]["projectname"]
-        self.PROJECT_PATH = os.path.join(self.PATH, self.FILE)
-        print(self.PROJECT_PATH)
-        if os.path.exists(self.PROJECT_PATH):
-            return True
-        # builder = Builder(self.PROJECT_PATH, self.config)
+        return True if os.path.exists(self.project_path) else False
+        # builder = Builder(self.project_path, self.config)
         # builder.folder_structure()
 
     def pypi_in_config_check(self):
         author = self.config['PYPI']['Author']
         author_email = self.config['PYPI']['AuthorEmail']
-        _pattern_email = "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
+        _pattern_email = r"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
         email_format = re.search(_pattern_email, author_email)
         description = self.config['PYPI']['Description']
         version = self.config['PYPI']['Version']
@@ -118,11 +116,11 @@ class ConfigRead:
 
     @property
     def get_project_name(self):
-        return self.FILE if self.FILE else None
+        return self.file if self.file else None
 
     @property
     def get_project_path(self):
-        return self.PATH if self.PATH else None
+        return self.path if self.path else None
 
     @property
     def get_project_folder(self):
