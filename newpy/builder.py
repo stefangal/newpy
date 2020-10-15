@@ -8,7 +8,7 @@ import os
 from license import NewLicense
 from setup_manger import PrepareSetup
 from configparser import ConfigParser  # debugging
-
+from config_bc import ConfigRead
 
 class Builder:
     def __init__(self, projectpath, _conf):
@@ -31,6 +31,10 @@ class Builder:
             self.build_test_folder()
             self.build_license()
             self.build_setup_py()
+            self.build_requirements_txt()
+            self.build_readme_md()
+            self.build_gitignore()
+
 
     def build_test_folder(self):
         if self._config["TODO"]["testfolder"] == "True":

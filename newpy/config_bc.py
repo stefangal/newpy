@@ -10,8 +10,7 @@ from shutil import copyfile
 import os
 import re
 
-from errors import MissingConfigFileError, MissingSectionError, MissingOptionError
-# from builder import Builder
+from .errors import MissingConfigFileError, MissingSectionError, MissingOptionError
 
 
 class MissingFileSectionError(ParsingError):
@@ -63,10 +62,7 @@ class ConfigBuildCheck:
                             missing_section.append(section)
                             missing_line_nr.append(line_nr)
         if missing_section:
-            raise MissingFileSectionError(
-                self.CONFIG_FILE_PATH,
-                f'{Fore.RED} + Missing section: {missing_section} on lines {missing_line_nr}'
-            )
+            raise MissingSectionError()
         return True
 
     def check_options_ok(self) -> bool:
@@ -99,17 +95,8 @@ class ConfigRead:
         if not len(self.config.read(self._CONFIG_FILE)):
             raise MissingConfigFileError(self._CONFIG_FILE)
 
-    # def config_file_test(self):
-    #     # 'newpy/config.ini' is available?
-    #     if os.path.exists(self._CONFIG_FILE):
-    #         print("Configuration file 'config.ini' available\n".rjust(15))
-    #         return True
-    #     else:
-    #         raise MissingConfigFileError(self._CONFIG_FILE)
-    #         # raise MissingConfigFileError("Config.ini file is missing or filename is incorrect! Check for config/config.ini")
 
     def project_in_config_check(self):
-
         self.PATH = self.config["PROJECT"]["projectpath"]
         self.FILE = self.config["PROJECT"]["projectname"]
         self.PROJECT_PATH = os.path.join(self.PATH, self.FILE)

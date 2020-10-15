@@ -21,14 +21,10 @@ SCRIPT_DIR = os.path.dirname(
     os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
-# from main import Run
-
 
 class PrepareSetup:
     def __init__(self, _conf):        
         self.conf_read = _conf
-        self.PROJECT_PATH = None
-        self.FILE = None
 
     def _get_personaldata(self) -> dict:
         try:
@@ -62,5 +58,4 @@ class PrepareSetup:
 
 if __name__ == "__main__":
     ps = PrepareSetup()
-    print(ps.get_personaldata())
     # ps.fill_setup_template()
