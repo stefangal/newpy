@@ -24,5 +24,3 @@ class OpenRepo:
 
 if __name__ == "__main__":
     opre = OpenRepo()
-    # opre.list_repos('8a35fdf7e3cf5a2e3dd5934a732faa776dfd6702')
-    opre.create_repo('8a35fdf7e3cf5a2e3dd5934a732faa776dfd6702', True)
