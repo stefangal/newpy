@@ -6,10 +6,11 @@
 PERSONAL AUTOMATION PROGRAM [CLI]
 </h3>
 
-
-### Description:
+<hr>
+## OVERVIEW:
 Open new Python project by building the structure and prepare files automatically.
-#### MAIN STEPS:
+
+#### TODO:
    - [x] **Folders** structure builder
    - [ ] **Files** 
      - [x] File: **README.md** 
@@ -19,8 +20,9 @@ Open new Python project by building the structure and prepare files automaticall
    - [ ] New **REPO** on Github
    - [ ] **Git push** on REPO
 
-**Run**
+## INSTALLATION ##
 ```code
+pip install -r requirements.txt
 python startnew
 ```
 
@@ -30,7 +32,7 @@ python startnew
   
 
 
-## Structure ##
+## GETTING STARTED ##
 [MORE ABOUT THE STRUCTURE](https://docs.python-guide.org/writing/structure/)
 
 ```bash
@@ -50,7 +52,11 @@ python startnew
 
 This is the app structure given all the actually available features.
 
-## Contributors ##
+## HOW TO HELP ##
+
+Any help is appriciated.
+
+## CONTRIBUTORS ##
 
 Feel free to contribute and register yourself in AUTHORS.md
 
