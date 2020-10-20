@@ -8,7 +8,7 @@ PERSONAL AUTOMATION PROGRAM [CLI]
 
 <hr>
 ## OVERVIEW:
-Open new Python project by building the structure and prepare files automatically.
+Open new Python project by building the structure and prepare files automatically. Very lightweight version of cookiecutter which in this case is build on using config.ini file. All the settings should be set there and you are ready to go.
 
 #### TODO:
    - [x] **Folders** structure builder
