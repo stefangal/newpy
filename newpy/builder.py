@@ -24,7 +24,7 @@ class Builder:
         """Building folders: PROJECT, test and docs folders"""
 
         if self.PATH and self.FILE and not os.path.exists(self.PROJECT_PATH):
-            print("building")
+            print("Structure building starts")
             os.mkdir(path=self.PROJECT_PATH)
 
             self.build_docs_folder()
@@ -34,7 +34,7 @@ class Builder:
             self.build_requirements_txt()
             self.build_readme_md()
             self.build_gitignore()
-
+            
 
     def build_test_folder(self):
         if self._config["TODO"]["testfolder"] == "True":
