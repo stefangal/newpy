@@ -7,6 +7,7 @@ PERSONAL AUTOMATION PROGRAM [CLI]
 </h3>
 
 <hr>
+
 ## OVERVIEW: ##
 Open new Python project by building the structure and prepare files automatically. Very lightweight version of cookie-cutter which in this case is build up on using config.ini file. All the settings should be set there and you are ready to go.
 <h5 style=color:red>Project is not ready, work in progress</h5>
