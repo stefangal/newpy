@@ -14,6 +14,12 @@ from colorama import init, Fore, Style
 from .errors import MissingConfigFileError, MissingSectionError, MissingOptionError
 
 
+config = ConfigParser()
+root_dir = os.path.dirname(os.path.abspath(__file__))
+config_file_path = os.path.join(root_dir, 'config.ini')
+config.read(config_file_path)
+
+
 class MissingFileSectionError(ParsingError):
     """
     Raised when a key-value pair is found before any section header.
@@ -31,25 +37,18 @@ class ConfigBuildCheck:
     """For checking and building the config.ini file"""
     def __init__(self):
         init()
-        self.root_dir = os.path.dirname(os.path.abspath(__file__))
-        print(self.root_dir)
-        self.config_file_path = os.path.join(self.root_dir,
-                                             'config.ini')
-        self.config_template_file_path = os.path.join(self.root_dir,
+        self.config_template_file_path = os.path.join(root_dir,
                                                       'templ_config.ini')
         self.template_config = ConfigParser()
         self.template_config.read(self.config_template_file_path)
-        self.config = ConfigParser()
-        self.config.read(self.config_file_path)
 
     def new_config_file(self):
         """Generate new config.ini file."""
         try:
-            copyfile(self.config_template_file_path, self.config_file_path)
-            print(f"\n{Fore.GREEN} + CREATED: {self.config_file_path}")
+            copyfile(self.config_template_file_path, config_file_path)
+            print(f"\n{Fore.GREEN} + CREATED: {config_file_path}")
         except Exception as exc:
-            print(
-                f"\n{Fore.RED} + FAILED TO CREATE: {self.config_file_path}\n")
+            print(f"\n{Fore.RED} + FAILED TO CREATE: {config_file_path}\n")
             raise exc
         finally:
             print(Style.RESET_ALL)
@@ -58,7 +57,7 @@ class ConfigBuildCheck:
         """Check sections available compared to the template in the config file."""
         missing_section, missing_line_nr = [], []
         for section in self.template_config.sections():
-            if section not in self.config.sections():
+            if section not in config.sections():
                 with open(self.config_template_file_path, 'r') as file:
                     for line_nr, line in enumerate(file, 1):
                         if section in line:
@@ -73,8 +72,8 @@ class ConfigBuildCheck:
         """Check options available compared to the template in the config file."""
         structure, missing_option = [], []
         file_ok = True
-        for section in self.config.sections():
-            for option in self.config.options(section):
+        for section in config.sections():
+            for option in config.options(section):
                 structure.append((section, option))
         for section in self.template_config.sections():
             for option in self.template_config.options(section):
@@ -84,7 +83,7 @@ class ConfigBuildCheck:
         if not file_ok:
             return False
             # raise Error(
-                # f"{Fore.RED} + Missing or corrupt option: {missing_option}")
+            # f"{Fore.RED} + Missing or corrupt option: {missing_option}")
         return file_ok
 
 
@@ -93,12 +92,12 @@ class ConfigRead:
     Read in the config.ini data.
     """
 
-    _CONFIG_FILE = "config/config.ini"
+    _CONFIG_FILE = "config.ini"
 
     def __init__(self):
         self.config = ConfigParser()
-        self.path = self.config["PROJECT"]["projectpath"]
-        self.file = self.config["PROJECT"]["projectname"]
+        self.path = config["PROJECT"]["projectpath"]
+        self.file = config["PROJECT"]["projectname"]
         self.project_path = os.path.join(self.path, self.file)
 
         if len(self.config.read(self._CONFIG_FILE)) == []:
@@ -133,9 +132,9 @@ class ConfigRead:
 
 
 if __name__ == "__main__":
-    cbc = ConfigBuildCheck()
-    cbc.new_config_file()
-    cbc.check_sections_ok()
-    cbc.check_options_ok()
-    # cr = ConfigRead()
-    # cr.project_in_config_check()
+    # cbc = ConfigBuildCheck()
+    # cbc.new_config_file()
+    # cbc.check_sections_ok()
+    # cbc.check_options_ok()
+    cr = ConfigRead()
+    print(cr.project_in_config_check())

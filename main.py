@@ -10,8 +10,6 @@ import logging
 import configparser
 from subprocess import check_output
 
-# from newpy.errors import MissingConfigFileError, MissingSectionError, MissingOptionError
-
 from newpy.config_bc import MissingFileSectionError, ConfigBuildCheck, ConfigRead
 from newpy.license import NewLicense
 from newpy.setup_manger import PrepareSetup
@@ -43,8 +41,10 @@ class Newpy:
         self.log = logging.StreamHandler()
         self.log.setFormatter(formatter)
         self.logger.addHandler(self.log)
-        # Initial check on config.ini file
+        # Initiallize classes
         self.cbc = ConfigBuildCheck()
+        self.cr = ConfigRead()
+
         self.run()
         
  
@@ -77,6 +77,7 @@ class Newpy:
             exit(1)
 
     def run(self):
+        os.system('clear')
         self.config_file_check()
 
     
