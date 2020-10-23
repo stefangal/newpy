@@ -2,7 +2,7 @@ import pytest
 
 @pytest.fixture(scope='session')
 def ps():
-    from ..newpy.setup_manger import PrepareSetup
+    from newpy.setup_manger import PrepareSetup
     ps = PrepareSetup()
     return ps
 

@@ -5,6 +5,7 @@
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 # https://pygithub.readthedocs.io/en/latest/github_objects/Organization.html
+# pylint: disable=no-name-in-module
 
 import requests
 from github import Github

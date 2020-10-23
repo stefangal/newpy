@@ -3,7 +3,7 @@
 #
 # This module is part of NewPy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
-
+# pylint: disable=no-name-in-module
 import os
 from license import NewLicense
 from setup_manger import PrepareSetup

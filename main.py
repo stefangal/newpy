@@ -8,10 +8,13 @@ import os
 import re
 import logging
 import configparser
+from subprocess import check_output
 
-from newpy.config_bc import ConfigBuildCheck
+# from newpy.errors import MissingConfigFileError, MissingSectionError, MissingOptionError
+
+from newpy.config_bc import MissingFileSectionError, ConfigBuildCheck, ConfigRead
 from newpy.license import NewLicense
-# from newpy.setup_manger import PrepareSetup
+from newpy.setup_manger import PrepareSetup
 from newpy.repo import OpenRepo
 
 MAJOR = 0
@@ -40,41 +43,43 @@ class Newpy:
         self.log = logging.StreamHandler()
         self.log.setFormatter(formatter)
         self.logger.addHandler(self.log)
-        # Initial checks
-        self.project_in_config_check()
-        print(self.pypi_in_config_check())
-        # Methods to run ON DEVELOPMENT stage
-        if self.config_file_test():
-            self.build_folder_structure()
-
+        # Initial check on config.ini file
+        self.cbc = ConfigBuildCheck()
+        self.run()
+        
  
+    def config_file_check(self):
+        config_file_ok = True
+        if self.cbc.check_sections_ok():
+            self.logger.info("Sections in config file OK")
+        else:
+            config_file_ok = False
+            self.logger.error("Config file is CORRUPT! Issue with sections")     
+        if self.cbc.check_options_ok:           
+            self.logger.info("Options in config file OK")
+        else:
+            config_file_ok = False
+            self.logger.error("Config file is CORRUPT! Issue with options")
+        if not config_file_ok:
+            self.solve_config_file()
+        else:
+            self.logger.info("Config file is OK, I will use it.")
+
+
+    def solve_config_file(self):
+        # if config_file_check is False this runs
+        print("Issue with config file!")
+        gen_or_stop = int(input("Do you want generate new file (1) or stop script (2) and manually correct the config file? >  "))
+        if gen_or_stop == 1:
+            self.cbc.new_config_file()
+            exit(1)
+        else:
+            exit(1)
+
+    def run(self):
+        self.config_file_check()
 
     
-    def project_details(self):
-        print(self.config["GITHUB"]["UserName"])
-
-    def github(self):
-        pass
-
-    def pypi(self):
-        pass
-
-
-
-    def build_folder_structure(self):
-        if self.PATH and self.FILE and not os.path.exists(self.PROJECT_PATH):
-            os.mkdir(path=self.PROJECT_PATH)
-            if self.config["TODO"]["TestFolder"] == "True":
-                os.mkdir(path=os.path.join(self.PATH, "tests"))
-            if self.config["TODO"]["DocsFolder"] == "True":
-                os.mkdir(path=os.path.join(self.PATH, "docs"))
-
-        self.logger.info("Folder structure ready")
-
-        return True
-
-
-
 
 if __name__ == "__main__":
     run = Newpy()

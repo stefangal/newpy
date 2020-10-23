@@ -1,0 +1,23 @@
+[PROJECT]
+projectname = TEST1
+projectpath = /Users/stefangal/Documents/Coding/Python/Projects/Newpy
+licensetype = mit 
+
+[ITHUB]
+username = stefangal
+githubrepo = True
+gitpush = True
+gittoken = 8a35fdf7e3cf5a2e3dd5934a732faa776dfd6702
+private = True
+
+[TODO]
+docsfolder = True
+testfolder = True
+
+[PYPI]
+author = Stefan Gal
+authoremail = xxx@xxx.com
+description = xxx
+version = 0.0.1
+release = False
+

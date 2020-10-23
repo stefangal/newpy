@@ -3,6 +3,7 @@
 #
 # This module is part of NewPy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
+# pylint: disable=no-name-in-module
 
 from configparser import ConfigParser, Error, ParsingError
 from shutil import copyfile
@@ -10,7 +11,7 @@ import os
 import re
 from colorama import init, Fore, Style
 
-from errors import MissingConfigFileError, MissingSectionError, MissingOptionError
+from .errors import MissingConfigFileError, MissingSectionError, MissingOptionError
 
 
 class MissingFileSectionError(ParsingError):
@@ -31,7 +32,9 @@ class ConfigBuildCheck:
     def __init__(self):
         init()
         self.root_dir = os.path.dirname(os.path.abspath(__file__))
-        self.config_file_path = os.path.join(self.root_dir, 'config.ini')
+        print(self.root_dir)
+        self.config_file_path = os.path.join(self.root_dir,
+                                             'config.ini')
         self.config_template_file_path = os.path.join(self.root_dir,
                                                       'templ_config.ini')
         self.template_config = ConfigParser()
@@ -62,7 +65,8 @@ class ConfigBuildCheck:
                             missing_section.append(section)
                             missing_line_nr.append(line_nr)
         if missing_section:
-            raise MissingSectionError()
+            return False
+            # raise MissingSectionError()
         return True
 
     def check_options_ok(self) -> bool:
@@ -78,8 +82,9 @@ class ConfigBuildCheck:
                     file_ok = False
                     missing_option.append(str(section + "->" + option))
         if not file_ok:
-            raise Error(
-                f"{Fore.RED} + Missing or corrupt option: {missing_option}")
+            return False
+            # raise Error(
+                # f"{Fore.RED} + Missing or corrupt option: {missing_option}")
         return file_ok
 
 
@@ -128,9 +133,9 @@ class ConfigRead:
 
 
 if __name__ == "__main__":
-    # cbc = ConfigBuildCheck()
-    # run.new_config_fi0jnuih76tle()
-    # cbc.check_sections_ok()
-    # cbc.check_options_ok()
-    cr = ConfigRead()
-    cr.project_in_config_check()
+    cbc = ConfigBuildCheck()
+    cbc.new_config_file()
+    cbc.check_sections_ok()
+    cbc.check_options_ok()
+    # cr = ConfigRead()
+    # cr.project_in_config_check()
