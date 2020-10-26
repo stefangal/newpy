@@ -31,3 +31,6 @@ DIR
 *.rar
 *.tar
 *.zip
+
+# Kite
+newpy.egg-info/

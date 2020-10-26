@@ -25,7 +25,7 @@ Open new Python project by building the structure and prepare files automaticall
 ## INSTALLATION ##
 ```code
 pip install -r requirements.txt
-python startnew
+startnew
 ```
 
 **Hints**

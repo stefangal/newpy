@@ -1,22 +1,18 @@
-import setuptools
+from setuptools import setup
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
-
-setuptools.setup(
-    name="projekt",
-    version="0.5.2",
-    author="George",
-    author_email="stefan.mail.sk@gmail.com",
-    description=""A small example package",",
-    long_description=long_description,
-    long_description_content_type="text/markdown",
-    url="https://github.com/pypa/sampleproject",
-    packages=setuptools.find_packages(),
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-    ],
-    python_requires='>=3.3',
-)
+setup(name='newpy',
+      version='0.1.0',
+      author='Stefan Gal',
+      author_email='"stefan.mail.sk@gmail.com',
+      description='Start project with this light tool',
+      url='https://github.com/stefangal/newpy',
+      packages=['newpy'],
+      package_dir={'Newpy': 'newpy'},
+      install_requires=['Click'],
+      py_modules=['main'],
+      entry_points='''
+      [console_scripts]
+      startnew=main:run
+    ''',
+      license="mit",
+      keywords=['newpy', 'skeleton', 'structure', 'new project', 'template'])

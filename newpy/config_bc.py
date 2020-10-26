@@ -9,14 +9,20 @@ from configparser import ConfigParser, Error, ParsingError
 from shutil import copyfile
 import os
 import re
+import time
 from colorama import init, Fore, Style
 
-from .errors import MissingConfigFileError, MissingSectionError, MissingOptionError
+try:
+    from .errors import MissingConfigFileError, MissingSectionError, MissingOptionError
+except Exception:
+    from errors import MissingConfigFileError, MissingSectionError, MissingOptionError
+
 
 
 config = ConfigParser()
 root_dir = os.path.dirname(os.path.abspath(__file__))
 config_file_path = os.path.join(root_dir, 'config.ini')
+print(config_file_path)
 config.read(config_file_path)
 
 
@@ -65,7 +71,6 @@ class ConfigBuildCheck:
                             missing_line_nr.append(line_nr)
         if missing_section:
             return False
-            # raise MissingSectionError()
         return True
 
     def check_options_ok(self) -> bool:
@@ -82,8 +87,6 @@ class ConfigBuildCheck:
                     missing_option.append(str(section + "->" + option))
         if not file_ok:
             return False
-            # raise Error(
-            # f"{Fore.RED} + Missing or corrupt option: {missing_option}")
         return file_ok
 
 
@@ -94,13 +97,13 @@ class ConfigRead:
 
     _CONFIG_FILE = "config.ini"
 
-    def __init__(self):
-        self.config = ConfigParser()
+    def __init__(self): 
+        config.read(config_file_path)       
         self.path = config["PROJECT"]["projectpath"]
         self.file = config["PROJECT"]["projectname"]
         self.project_path = os.path.join(self.path, self.file)
 
-        if len(self.config.read(self._CONFIG_FILE)) == []:
+        if len(config.read(self._CONFIG_FILE)) == []:
             raise MissingConfigFileError(self._CONFIG_FILE)
 
     def project_in_config_check(self):
@@ -109,14 +112,14 @@ class ConfigRead:
         # builder.folder_structure()
 
     def pypi_in_config_check(self):
-        author = self.config['PYPI']['Author']
-        author_email = self.config['PYPI']['AuthorEmail']
+        author = config['PYPI']['Author']
+        author_email = config['PYPI']['AuthorEmail']
         _pattern_email = r"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
         email_format = re.search(_pattern_email, author_email)
-        description = self.config['PYPI']['Description']
-        version = self.config['PYPI']['Version']
-        release = self.config['PYPI']['Release']
-        return all([author, email_format, description, version, release])
+        description = config['PYPI']['Description']
+        version = config['PYPI']['Version']
+        release = config['PYPI']['Release']
+        return all((author, email_format, description, version, release))
 
     @property
     def get_project_name(self):
@@ -130,6 +133,18 @@ class ConfigRead:
     def get_project_folder(self):
         return os.path.join(self.get_project_path, self.get_project_name)
 
+    def visuallize(self):
+        idx = 1
+        for section in config.sections():        
+            print("\n")
+            for  option, data in config.items(section):                
+                time.sleep(0.15)          
+                space = (4 - len(list(str(idx)))) * ' '
+                if len(data) > 2:                    
+                    print(f"{Fore.YELLOW}{idx}{space}{Fore.BLUE}[{Fore.GREEN}+{Fore.BLUE}]{Fore.GREEN}{section} -> {option} : {Fore.LIGHTWHITE_EX}{data}") 
+                else:
+                    print(f"{Fore.YELLOW}{idx}{space}{Fore.BLUE}[{Fore.RED}-{Fore.BLUE}]{Fore.RED}{section} -> {option} : {Fore.LIGHTWHITE_EX}{data}")
+                idx += 1
 
 if __name__ == "__main__":
     # cbc = ConfigBuildCheck()
@@ -137,4 +152,5 @@ if __name__ == "__main__":
     # cbc.check_sections_ok()
     # cbc.check_options_ok()
     cr = ConfigRead()
-    print(cr.project_in_config_check())
+    cr.visuallize()
+    # print(cr.project_in_config_check())

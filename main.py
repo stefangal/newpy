@@ -6,6 +6,7 @@
 
 import os
 import re
+import click
 import logging
 import configparser
 from subprocess import check_output
@@ -48,7 +49,7 @@ class Newpy:
         self.run()
         
  
-    def config_file_check(self):
+    def _config_file_check(self):
         config_file_ok = True
         if self.cbc.check_sections_ok():
             self.logger.info("Sections in config file OK")
@@ -65,6 +66,10 @@ class Newpy:
         else:
             self.logger.info("Config file is OK, I will use it.")
 
+    def show_config(self):
+        cr = ConfigRead()
+        cr.visuallize()
+
 
     def solve_config_file(self):
         # if config_file_check is False this runs
@@ -72,15 +77,18 @@ class Newpy:
         gen_or_stop = int(input("Do you want generate new file (1) or stop script (2) and manually correct the config file? >  "))
         if gen_or_stop == 1:
             self.cbc.new_config_file()
-            exit(1)
-        else:
-            exit(1)
+        exit(1)
 
     def run(self):
         os.system('clear')
-        self.config_file_check()
-
+        self._config_file_check()
+        self.show_config()
     
 
+@click.command()
+def run(): 
+    Newpy()
+
 if __name__ == "__main__":
-    run = Newpy()
+    Newpy()
+    
