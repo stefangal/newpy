@@ -58,9 +58,6 @@ authoremail = xxx@xxx.com
 description = xxx
 version = 0.0.1
 release = False
-
-
-
 ```
 
 #### Folder structure

@@ -12,7 +12,7 @@ setup(name='newpy',
       py_modules=['main'],
       entry_points='''
       [console_scripts]
-      startnew=main:run
+      startnew=main:startnew
     ''',
       license="mit",
       keywords=['newpy', 'skeleton', 'structure', 'new project', 'template'])
