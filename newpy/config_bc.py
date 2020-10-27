@@ -19,11 +19,10 @@ except Exception:
 
 
 
-config = ConfigParser()
-root_dir = os.path.dirname(os.path.abspath(__file__))
-config_file_path = os.path.join(root_dir, 'config.ini')
-print(config_file_path)
-config.read(config_file_path)
+_config = ConfigParser()
+_root_dir = os.path.dirname(os.path.abspath(__file__))
+_config_file_path = os.path.join(_root_dir, 'config.ini')
+_config.read(_config_file_path)
 
 
 class MissingFileSectionError(ParsingError):
@@ -43,7 +42,7 @@ class ConfigBuildCheck:
     """For checking and building the config.ini file"""
     def __init__(self):
         init()
-        self.config_template_file_path = os.path.join(root_dir,
+        self.config_template_file_path = os.path.join(_root_dir,
                                                       'templ_config.ini')
         self.template_config = ConfigParser()
         self.template_config.read(self.config_template_file_path)
@@ -51,10 +50,10 @@ class ConfigBuildCheck:
     def new_config_file(self):
         """Generate new config.ini file."""
         try:
-            copyfile(self.config_template_file_path, config_file_path)
-            print(f"\n{Fore.GREEN} + CREATED: {config_file_path}")
+            copyfile(self.config_template_file_path, _config_file_path)
+            print(f"\n{Fore.GREEN} + CREATED: {_config_file_path}")
         except Exception as exc:
-            print(f"\n{Fore.RED} + FAILED TO CREATE: {config_file_path}\n")
+            print(f"\n{Fore.RED} + FAILED TO CREATE: {_config_file_path}\n")
             raise exc
         finally:
             print(Style.RESET_ALL)
@@ -63,7 +62,7 @@ class ConfigBuildCheck:
         """Check sections available compared to the template in the config file."""
         missing_section, missing_line_nr = [], []
         for section in self.template_config.sections():
-            if section not in config.sections():
+            if section not in _config.sections():
                 with open(self.config_template_file_path, 'r') as file:
                     for line_nr, line in enumerate(file, 1):
                         if section in line:
@@ -77,8 +76,8 @@ class ConfigBuildCheck:
         """Check options available compared to the template in the config file."""
         structure, missing_option = [], []
         file_ok = True
-        for section in config.sections():
-            for option in config.options(section):
+        for section in _config.sections():
+            for option in _config.options(section):
                 structure.append((section, option))
         for section in self.template_config.sections():
             for option in self.template_config.options(section):
@@ -98,27 +97,25 @@ class ConfigRead:
     _CONFIG_FILE = "config.ini"
 
     def __init__(self): 
-        config.read(config_file_path)       
-        self.path = config["PROJECT"]["projectpath"]
-        self.file = config["PROJECT"]["projectname"]
+        _config.read(_config_file_path)       
+        self.path = _config["PROJECT"]["projectpath"]
+        self.file = _config["PROJECT"]["projectname"]
         self.project_path = os.path.join(self.path, self.file)
 
-        if len(config.read(self._CONFIG_FILE)) == []:
+        if len(_config.read(self._CONFIG_FILE)) == []:
             raise MissingConfigFileError(self._CONFIG_FILE)
 
     def project_in_config_check(self):
         return True if os.path.exists(self.project_path) else False
-        # builder = Builder(self.project_path, self.config)
-        # builder.folder_structure()
 
     def pypi_in_config_check(self):
-        author = config['PYPI']['Author']
-        author_email = config['PYPI']['AuthorEmail']
+        author = _config['PYPI']['Author']
+        author_email = _config['PYPI']['AuthorEmail']
         _pattern_email = r"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
         email_format = re.search(_pattern_email, author_email)
-        description = config['PYPI']['Description']
-        version = config['PYPI']['Version']
-        release = config['PYPI']['Release']
+        description = _config['PYPI']['Description']
+        version = _config['PYPI']['Version']
+        release = _config['PYPI']['Release']
         return all((author, email_format, description, version, release))
 
     @property
@@ -135,12 +132,12 @@ class ConfigRead:
 
     def visuallize(self):
         idx = 1
-        for section in config.sections():        
+        for section in _config.sections():        
             print("\n")
-            for  option, data in config.items(section):                
+            for  option, data in _config.items(section):                
                 time.sleep(0.15)          
                 space = (4 - len(list(str(idx)))) * ' '
-                if len(data) > 2:                    
+                if len(data) > 0:                    
                     print(f"{Fore.YELLOW}{idx}{space}{Fore.BLUE}[{Fore.GREEN}+{Fore.BLUE}]{Fore.GREEN}{section} -> {option} : {Fore.LIGHTWHITE_EX}{data}") 
                 else:
                     print(f"{Fore.YELLOW}{idx}{space}{Fore.BLUE}[{Fore.RED}-{Fore.BLUE}]{Fore.RED}{section} -> {option} : {Fore.LIGHTWHITE_EX}{data}")

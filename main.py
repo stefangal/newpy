@@ -24,6 +24,19 @@ __version__ = f"{MAJOR}.{MINOR}.{MICRO}"
 logger = logging.getLogger("new_project")
 logger.setLevel(logging.DEBUG)
 
+structure = """└── app
+    ├── tests
+    │   └── __init__.py
+    ├── docs
+    │    
+    ├── app
+    │   └── __init__.py
+    ├── .gitignore
+    ├── LICENSE
+    ├── README.md
+    ├── requirements.txt
+    └── setup.py"""
+
 
 class Newpy:
     """
@@ -32,7 +45,6 @@ class Newpy:
     > Run based on config.ini file
     > Generate output
     """
-
     def __init__(self):
         # Logger
         formatter = logging.Formatter(
@@ -47,16 +59,15 @@ class Newpy:
         self.cr = ConfigRead()
 
         self.run()
-        
- 
+
     def _config_file_check(self):
         config_file_ok = True
         if self.cbc.check_sections_ok():
             self.logger.info("Sections in config file OK")
         else:
             config_file_ok = False
-            self.logger.error("Config file is CORRUPT! Issue with sections")     
-        if self.cbc.check_options_ok:           
+            self.logger.error("Config file is CORRUPT! Issue with sections")
+        if self.cbc.check_options_ok:
             self.logger.info("Options in config file OK")
         else:
             config_file_ok = False
@@ -70,11 +81,13 @@ class Newpy:
         cr = ConfigRead()
         cr.visuallize()
 
-
     def solve_config_file(self):
         # if config_file_check is False this runs
         print("Issue with config file!")
-        gen_or_stop = int(input("Do you want generate new file (1) or stop script (2) and manually correct the config file? >  "))
+        gen_or_stop = int(
+            input(
+                "Do you want generate new file (1) or stop script (2) and manually correct the config file? >  "
+            ))
         if gen_or_stop == 1:
             self.cbc.new_config_file()
         exit(1)
@@ -83,12 +96,13 @@ class Newpy:
         os.system('clear')
         self._config_file_check()
         self.show_config()
-    
+
 
 @click.command()
-def run(): 
+def run():
     Newpy()
+
+
 
 if __name__ == "__main__":
     Newpy()
-    
