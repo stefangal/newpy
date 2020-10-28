@@ -9,6 +9,10 @@ log/
 ######################
 .vscode
 __pycache__/
+.mypy_cache
+.pytest_cache
+newpy/mypy.ini
+
 
 # OS generated files #
 ######################
@@ -19,8 +23,7 @@ Icon?
 Thumbs.db
 
 # Custom
-DIR
-
+newpy/archive
 
 # Packages #
 ############

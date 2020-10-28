@@ -22,8 +22,7 @@ class NewLicense:
          'gpl2', 'gpl3', 'isc', 'lgpl', 'mit', 'mpl', 'wtfpl', 'zlib'
         """
         sp.Popen(f"lice {lictype} -f {dst}/LICENSE", shell=True).wait()
-        print(f"Download of {lictype} license successful!")
-        print(f"LICENSE save in folder: {dst}\n")
+        
 
 
 if __name__ == "__main__":
