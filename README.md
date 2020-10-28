@@ -17,24 +17,20 @@ Open new Python project by building the structure and prepare initial files auto
 # clone the repo
 $ git clone https://github.com/stefangal/newpy
 
-# change the working directory to Newpy
+# change the working directory to newpy
 $ cd newpy
 
 # install the requirements
-$ python3 -m pip install -r requirements.txt
-
-# install with pip in local mode
-$ pip install -e .
+$ python install .
 
 # now you can run it
 $ startnew
 ```
 
 
-
 ## INSTALLATION ##
 
-It supposed to work the way, that in terminal where you run ```startnew``` there in the current directory it will generate the project.
+Use ```startnew```  to generate the folders and files in current working directory.
 
 ```code
 $ pip install newpy
@@ -82,4 +78,5 @@ Any help is appriciated.
 
 Feel free to contribute and register yourself in AUTHORS.md
 
+For more information see CONTRIBUTING.md
 

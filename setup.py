@@ -1,5 +1,8 @@
 from setuptools import setup
 
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
+
 setup(name='newpy',
       version='0.2.0',
       author='Stefan Gal',
@@ -8,7 +11,7 @@ setup(name='newpy',
       url='https://github.com/stefangal/newpy',
       packages=['newpy'],
       package_dir={'Newpy': 'newpy'},
-      install_requires=['Click'],
+      install_requires=required,
       py_modules=['main'],
       entry_points='''
       [console_scripts]
