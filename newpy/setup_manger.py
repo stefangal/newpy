@@ -13,7 +13,7 @@ import sys
 import os
 
 from colorama import init, Fore, Style
-# from config_bc import ConfigRead
+
 
 PACKAGE_PARENT = '..'
 SCRIPT_DIR = os.path.dirname(

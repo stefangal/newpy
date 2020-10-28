@@ -11,6 +11,26 @@ PERSONAL NEW PYTHON PROJECT AUTOMATION PROGRAM [CLI]
 
 ## OVERVIEW: ##
 Open new Python project by building the structure and prepare initial files automatically via CLI. Very lightweight version of cookie-cutter. 
+## DEVELOPMENT ##
+
+```
+# clone the repo
+$ git clone https://github.com/stefangal/newpy
+
+# change the working directory to Newpy
+$ cd newpy
+
+# install the requirements
+$ python3 -m pip install -r requirements.txt
+
+# install with pip in local mode
+$ pip install -e .
+
+# now you can run it
+$ startnew
+```
+
+
 
 ## INSTALLATION ##
 
