@@ -13,7 +13,6 @@ from newpy.cli_builder import Builder
               help="Choose license type")
 def startnew(p, license_type):
     b = Builder(p, license_type)
-    print(b.license_set)
     b.build_license(license_type)
 
 

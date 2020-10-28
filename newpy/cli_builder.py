@@ -8,8 +8,13 @@
 import os
 import click
 import logging
-from .license import NewLicense
-# from setup_manger import PrepareSetup
+
+try:
+    from .license import NewLicense
+    from .setup_manger import PrepareSetup
+except Exception:
+    from license import NewLicense
+    from setup_manger import PrepareSetup
 
 logging.Handler(level=logging.DEBUG)
 logging.getLogger(__name__)
@@ -35,19 +40,29 @@ class Builder:
 
         # if os.path.exists(self.project_path):
         print("\n")
-        os.mkdir(path=os.path.join(self.curr_working_dir, self.project_name))
+        os.mkdir(path=self.project_path)
+        self._build_init_file(self.project_path)
+
         self._build_test_folder()
         self._build_docs_folder()
         self._build_readme_md()
-        # self.build_setup_py()
-        # self.build_requirements_txt()
-        # self.build_gitignore()
+        self.build_setup_py()
+        self._build_requirements_txt()
+        self._build_gitignore()
+
+    def _build_init_file(self, path):
+        try:
+            with open(os.path.join(path, "__init__.py"), "w"):
+                return
+        except Exception as e:
+            logging.error('Issue creating __init__.py file ', e)
 
     def _build_test_folder(self):
         test_path = os.path.join(self.project_path, "tests")
         try:
             os.mkdir(path=test_path)
             print("Test path: ", test_path)
+            self._build_init_file(test_path)
         except Exception as e:
             logging.error('Issue creating tests folder ', e)
 
@@ -63,7 +78,8 @@ class Builder:
         try:
             with open(os.path.join(self.project_path, "README.md"),
                       "w") as file:
-                return file
+                line = f'<h1 align="center"> {self.project_name} </h1>'
+                file.write(line)
         except Exception as e:
             logging.error('Issue creating README.md file ', e)
 
@@ -72,33 +88,33 @@ class Builder:
         try:
             if lic_type in self.license_set:
                 lic.download(self.project_path, lic_type)
-                print("LICENSE type: ", lic_type)
+                print("LICENSE type used: ", lic_type)
             else:
                 lic.download(self.project_path, 'mit')
                 print("LICENSE type incorrect. Using as default: ", lic_type)
         except Exception as e:
             logging.error('Issue to create LICENSE file ', e)
 
-    # def build_setup_py(self):
-    #     ps = PrepareSetup()
-    #     ps.fill_setup_template(self.PROJECT_PATH)
+    def build_setup_py(self):
+        ps = PrepareSetup()
+        ps.fill_setup_template(self.project_path)
 
-    # def build_requirements_txt(self):
-    #     with open(os.path.join(self.PROJECT_PATH, "requirements.txt"), "w") as file:
-    #         pass
+    def _build_requirements_txt(self):
+        req_path = os.path.join(self.project_path, "requirements.txt")
+        try:
+            with open(req_path, "w"):
+                return
+        except Exception as e:
+            logging.error('Issue creating requirements.txt file ', e)
 
-    # def build_gitignore(self):
-    #     with open(os.path.join(self.PROJECT_PATH, ".gitignore"), "w") as file:
-    #         pass
+    def _build_gitignore(self):
+        gitign_path = os.path.join(self.project_path, ".gitignore")
+        try:
+            with open(gitign_path, "w"):
+                return
+        except Exception as e:
+            logging.error('Issue creating .gitignore file ', e)
 
 
-# @click.command()
-# @click.option('--proj_name',
-#               default='project',
-#               help='This will be the folder name & project name.')
-# def startnew(proj_name):
-#     Builder(proj_name)
-
-# if __name__ == "__main__":
-
-#     startnew()
+if __name__ == "__main__":
+    pass

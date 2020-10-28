@@ -6,7 +6,12 @@
 
 import subprocess as sp
 
-
+licenses = """
+        'afl3', 'agpl3', 'apache', 'bsd2', 'bsd3', 'cc0', 'cc_by', 'cc_by_nc', 
+         'cc_by_nc_nd', 'cc_by_nc_sa', 'cc_by_nd', 'cc_by_sa', 'cddl', 'epl', 
+         'gpl2', 'gpl3', 'isc', 'lgpl', 'mit', 'mpl', 'wtfpl', 'zlib'
+        """
+        
 class NewLicense:
     """
     To get the required LICENSE file.
@@ -21,8 +26,10 @@ class NewLicense:
          'cc_by_nc_nd', 'cc_by_nc_sa', 'cc_by_nd', 'cc_by_sa', 'cddl', 'epl', 
          'gpl2', 'gpl3', 'isc', 'lgpl', 'mit', 'mpl', 'wtfpl', 'zlib'
         """
+
         sp.Popen(f"lice {lictype} -f {dst}/LICENSE", shell=True).wait()
-        
+    
+        print(licenses)
 
 
 if __name__ == "__main__":
