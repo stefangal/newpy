@@ -1,4 +1,3 @@
-<h5 style=color:red align="center">Project is not ready, work in progress</h5>
 <h1 align="center"> NewPy </h1>
 
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
@@ -10,7 +9,8 @@ PERSONAL NEW PYTHON PROJECT AUTOMATION PROGRAM [CLI]
 <hr>
 
 ## OVERVIEW: ##
-Open new Python project by building the structure and prepare initial files automatically via CLI. Very lightweight version of cookie-cutter. 
+- [x] Open new Python project by building the structure and prepare initial files automatically via simple command line command ```startnew```. 
+- [ ] Prepare github repository
 ## DEVELOPMENT ##
 
 ```
