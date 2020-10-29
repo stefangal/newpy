@@ -7,13 +7,13 @@ from newpy.cli_builder import Builder
               default='project',
               prompt='The project name: ',
               help='This will be the folder name & project name.')
-@click.option('--license_type',
+@click.option('--l',
               default='mit',
               prompt='The license type: ',
               help="Choose license type")
-def startnew(p, license_type):
-    b = Builder(p, license_type)
-    b.build_license(license_type)
+def startnew(p, l):
+    build = Builder(p, l)
+    build.build_license(l)
 
 
 # if __name__ == "__main__":

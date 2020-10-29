@@ -6,17 +6,17 @@
 # pylint: disable=no-name-in-module
 
 import os
-import click
 import logging
 
 try:
-    from .license import NewLicense
-    from .setup_manger import PrepareSetup
+    from newpy.license import NewLicense
+    from newpy.setup_manager import PrepareSetup
 except Exception:
-    from license import NewLicense
-    from setup_manger import PrepareSetup
+    from .license import NewLicense
+    from .setup_manager import PrepareSetup
 
-logging.Handler(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)s:%(message)s')
 logging.getLogger(__name__)
 
 
@@ -33,29 +33,25 @@ class Builder:
         self.project_path = os.path.join(self.curr_working_dir,
                                          self.project_name)
 
-        self.folder_structure()
+        self._folder_structure()
 
-    def folder_structure(self):
+    def _folder_structure(self):
         """Building folders: PROJECT, test and docs folders"""
 
         # if os.path.exists(self.project_path):
         print("\n")
         os.mkdir(path=self.project_path)
-        self._build_init_file(self.project_path)
-
-        self._build_test_folder()
-        self._build_docs_folder()
-        self._build_readme_md()
-        self.build_setup_py()
-        self._build_requirements_txt()
-        self._build_gitignore()
+        self._build_init_file(self.project_path),
+        self._build_test_folder(), self._build_docs_folder(),
+        self._build_readme_md(), self.build_setup_py(),
+        self._build_requirements_txt(), self._build_gitignore()
 
     def _build_init_file(self, path):
         try:
             with open(os.path.join(path, "__init__.py"), "w"):
                 return
         except Exception as e:
-            logging.error('Issue creating __init__.py file ', e)
+            logging.error('Issue with creating __init__.py file ', e)
 
     def _build_test_folder(self):
         test_path = os.path.join(self.project_path, "tests")
@@ -63,16 +59,18 @@ class Builder:
             os.mkdir(path=test_path)
             print("Test path: ", test_path)
             self._build_init_file(test_path)
+            return
         except Exception as e:
-            logging.error('Issue creating tests folder ', e)
+            logging.error('Issue with creating tests folder ', e)
 
     def _build_docs_folder(self):
         docs_path = os.path.join(self.project_path, "docs")
         try:
             os.mkdir(path=docs_path)
             print("Docs path: ", docs_path)
+            return
         except Exception as e:
-            logging.error('Issue creating docs folder ', e)
+            logging.error('Issue with creating docs folder ', e)
 
     def _build_readme_md(self):
         try:
@@ -80,20 +78,22 @@ class Builder:
                       "w") as file:
                 line = f'<h1 align="center"> {self.project_name} </h1>'
                 file.write(line)
-        except Exception as e:
-            logging.error('Issue creating README.md file ', e)
+                return
+        except Exception as excp:
+            logging.error('Issue with creating README.md file ', excp)
 
     def build_license(self, lic_type):
         lic = NewLicense()
         try:
             if lic_type in self.license_set:
                 lic.download(self.project_path, lic_type)
-                print("LICENSE type used: ", lic_type)
+                print("LICENSE type used: ", "mit")
             else:
                 lic.download(self.project_path, 'mit')
                 print("LICENSE type incorrect. Using as default: ", lic_type)
+            return
         except Exception as e:
-            logging.error('Issue to create LICENSE file ', e)
+            logging.error('Issue with creating LICENSE file ', e)
 
     def build_setup_py(self):
         ps = PrepareSetup()
@@ -105,15 +105,22 @@ class Builder:
             with open(req_path, "w"):
                 return
         except Exception as e:
-            logging.error('Issue creating requirements.txt file ', e)
+            logging.error('Issue with creating requirements.txt file ', e)
 
     def _build_gitignore(self):
         gitign_path = os.path.join(self.project_path, ".gitignore")
         try:
-            with open(gitign_path, "w"):
-                return
+            with open(
+                    os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                 "templ_gitignore"),
+                    "r") as gitignore_template:
+                with open(gitign_path, "w") as gitignore_new:
+                    for row in gitignore_template.readlines():
+                        gitignore_new.writelines(row)
+            return
+
         except Exception as e:
-            logging.error('Issue creating .gitignore file ', e)
+            logging.error('Issue with creating .gitignore file ', e)
 
 
 if __name__ == "__main__":

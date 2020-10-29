@@ -36,6 +36,8 @@ Use ```startnew```  to generate the folders and files in current working directo
 $ pip install newpy
 
 $ startnew
+or
+$ startnew --p <project_name> --l <license_type>
 ```
 You will be asked several questions as well as you will be able to choose some default settings.
 
