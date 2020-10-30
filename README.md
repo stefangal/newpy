@@ -33,7 +33,7 @@ $ startnew
 Use ```startnew```  to generate the folders and files in current working directory.
 
 ```code
-$ pip install newpy
+$ pip install startnew
 
 $ startnew
 or

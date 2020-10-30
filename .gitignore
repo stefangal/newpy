@@ -12,6 +12,8 @@ __pycache__/
 .mypy_cache
 .pytest_cache
 newpy/mypy.ini
+build
+dist
 
 
 # OS generated files #
@@ -24,6 +26,7 @@ Thumbs.db
 
 # Custom
 archive
+newpy/mypy.ini
 
 # Packages #
 ############
@@ -36,4 +39,4 @@ archive
 *.zip
 
 # Kite
-newpy.egg-info/
+startnew.egg-info/

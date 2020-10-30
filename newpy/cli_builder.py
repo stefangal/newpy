@@ -51,7 +51,7 @@ class Builder:
             with open(os.path.join(path, "__init__.py"), "w"):
                 return
         except Exception as e:
-            logging.error('Issue with creating __init__.py file ', e)
+            logging.error('Issue creating __init__.py file ', e)
 
     def _build_test_folder(self):
         test_path = os.path.join(self.project_path, "tests")
@@ -109,11 +109,10 @@ class Builder:
 
     def _build_gitignore(self):
         gitign_path = os.path.join(self.project_path, ".gitignore")
+        gitign_templ_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "templ_gitignore.py")
         try:
-            with open(
-                    os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                 "templ_gitignore"),
-                    "r") as gitignore_template:
+            with open(gitign_templ_path, "r") as gitignore_template:
                 with open(gitign_path, "w") as gitignore_new:
                     for row in gitignore_template.readlines():
                         gitignore_new.writelines(row)
