@@ -4,3 +4,4 @@ lice==0.6
 pylint==2.6.0
 pytest==6.1.1
 PyGithub==1.53
+mock==4.0.2

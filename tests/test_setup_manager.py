@@ -1,18 +1,23 @@
+# https://stackoverflow.com/questions/35851323/how-to-test-a-function-with-input-call
+
 import pytest
+import mock
+import builtins
+
 
 @pytest.fixture(scope='session')
 def ps():
-    from newpy.setup_manger import PrepareSetup
+
+    from newpy.setup_manager import PrepareSetup
+
     ps = PrepareSetup()
     return ps
 
+
 class TestPrepareSetup:
-
-
-    @pytest.fixture(scope='function')
-    def info(self):
-        print('\nEnter: gal')
-
+    """
+    Testing the setup_manager
+    """
     def test_get_personaldata(self, ps):
         assert isinstance(ps._get_personaldata(), dict)
         assert ps._get_personaldata() == {
@@ -22,18 +27,21 @@ class TestPrepareSetup:
         }
 
     def test_item_no_entry(self, ps):
-        line = 'name="pkg-YOUR-USERNAME-HERE",'
-        assert ps._item(line,
-                             "author",
-                             "pkg-YOUR-USERNAME-HERE",
-                             prefix="pkg-",
-                             git=True) == ('pkg-YOUR-USERNAME-HERE',
-                                           'pkg-StefPy')
+        with mock.patch.object(builtins, 'input', lambda _: mock.call):
+            line = 'name="pkg-YOUR-USERNAME-HERE",'
+            assert ps._item(line,
+                            "author",
+                            "pkg-YOUR-USERNAME-HERE",
+                            prefix="pkg-",
+                            git=True) == ('pkg-YOUR-USERNAME-HERE',
+                                          'pkg-StefPy')
 
-    def test_item_with_entry(self, ps, info):
-        line = 'name="pkg-YOUR-USERNAME-HERE",'
-        assert ps._item(line,
-                             "author",
-                             "pkg-YOUR-USERNAME-HERE",
-                             prefix="pkg-",
-                             git=True) == ('pkg-YOUR-USERNAME-HERE', 'gal')
+    def test_item_with_entry(self, ps):
+        with mock.patch.object(builtins, 'input', lambda _: 'gal'):
+            line = 'name="pkg-YOUR-USERNAME-HERE",'
+            output = ps._item(line,
+                              "author",
+                              "pkg-YOUR-USERNAME-HERE",
+                              prefix="pkg-",
+                              git=True)
+            assert output == ('pkg-YOUR-USERNAME-HERE', 'gal')
