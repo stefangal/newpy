@@ -37,9 +37,10 @@ $ pip install startnew
 
 $ startnew
 or
-$ startnew --p <project_name> --l <license_type>
+$ startnew --p <project_name> --l <license_type> --r<Github_token>
 ```
 You will be asked several questions as well as you will be able to choose some default settings.
+Regarding Github repository read the **GITHUB section**.
 
 ## GETTING STARTED ##
 
@@ -70,6 +71,22 @@ You can choose from the following abbrevations:
 afl3', 'agpl3', 'apache', 'bsd2', 'bsd3', 'cc0', 'cc_by', 'cc_by_nc',
 'cc_by_nc_nd', 'cc_by_nc_sa', 'cc_by_nd', 'cc_by_sa', 'cddl', 'epl', 
 'gpl2', 'gpl3', 'isc', 'lgpl', 'mit', 'mpl', 'wtfpl', 'zlib'
+```
+
+### GITHUB
+
+In order to open a new repository for the project via command line, first you will need to
+get/create the Github access token. 
+
+Read more here: [Instructions](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)
+
+
+To open a repository for an existing project via command line use:
+
+```code
+
+$ startnew --r <Github_token>
+
 ```
 
 ## HOW TO HELP ##
