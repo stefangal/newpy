@@ -11,15 +11,22 @@ from github import Github
 
 
 class OpenRepo:
-    def list_repos(self, token):
-        g = Github(token)
-        for repo in g.get_user().get_repos():
-            print(repo.name)
-
-    def create_new_repo(self, repo_name, token, private):
+    """
+    Create new Github repository.
+    """
+    def create_new_repo(self, repo_name, token):
+        """Create new repository.
+        
+        Parameters
+        ----------
+        repo_name : str
+            Name of the new repository
+        token : str
+            Github access token
+        """
         g = Github(token)
         user = g.get_user()
-        user.create_repo(name=repo_name, private=private)
+        user.create_repo(name=repo_name, private=True)
 
 
 if __name__ == "__main__":

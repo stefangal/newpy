@@ -9,7 +9,7 @@ with open('requirements.txt') as f:
     required = f.read().splitlines()
 
 setup(name='startnew',
-      version='1.2.2',
+      version='1.3.0',
       author='Stefan Gal',
       author_email='"stefan.mail.sk@gmail.com',
       description='Start new python project with this light cli tool',

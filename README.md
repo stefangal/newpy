@@ -36,6 +36,10 @@ Use ```startnew```  to generate the folders and files in current working directo
 ```code
 $ pip install startnew
 
+# for arguments help run:
+$ startnew --help
+
+# run:
 $ startnew
 or
 $ startnew --p <project_name> --l <license_type> --g <Github_token>
@@ -83,14 +87,6 @@ In order to open a new repository for the project via command line, first you wi
 get/create the Github access token. 
 
 [Instructions](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token) how to get access token.
-
-To open a repository for an existing project via command line use:
-
-```code
-
-$ startnew --g <Github_token>
-
-```
 
 ## HOW TO HELP ##
 

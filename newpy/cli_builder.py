@@ -11,9 +11,11 @@ import logging
 try:
     from newpy.license import NewLicense
     from newpy.setup_manager import PrepareSetup
+    from newpy.repo import OpenRepo
 except Exception:
     from .license import NewLicense
     from .setup_manager import PrepareSetup
+    from .newpy.repo import OpenRepo
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)s:%(message)s')
@@ -26,7 +28,8 @@ class Builder:
                    'cc_by_sa', 'cddl', 'epl', 'gpl2', 'gpl3', 'isc', 'lgpl',
                    'mit', 'mpl', 'wtfpl', 'zlib')
 
-    def __init__(self, project_name, lic_type):
+    def __init__(self, project_name, lic_type, token=None):
+        self.token = token
         self.lic_type = lic_type
         self.curr_working_dir = os.getcwd()
         self.project_name = project_name
@@ -34,6 +37,9 @@ class Builder:
                                          self.project_name)
 
         self._folder_structure()
+
+        if self.token:
+            self._create_repo(token)
 
     def _folder_structure(self):
         """Building folders: PROJECT, test and docs folders"""
@@ -120,6 +126,10 @@ class Builder:
 
         except Exception as e:
             logging.error('Issue with creating .gitignore file ', e)
+
+    def _create_repo(self, token):
+        repo = OpenRepo()
+        repo.create_new_repo(self.project_name, token)
 
 
 if __name__ == "__main__":

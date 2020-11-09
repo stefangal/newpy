@@ -6,13 +6,15 @@ from newpy.cli_builder import Builder
 @click.option('--p',
               default='project',
               prompt='The project name: ',
-              help='This will be the folder name & project name.')
+              help='Directory & project name.')
 @click.option('--l',
               default='mit',
               prompt='The license type: ',
-              help="Choose license type")
-def startnew(p, l):
-    build = Builder(p, l)
+              help="License type")
+@click.option('--g',
+              help="Github access token to open private github repository")
+def startnew(p, l, g):
+    build = Builder(p, l, g)
     build.build_license(l)
 
 
