@@ -8,6 +8,9 @@
 # pylint: disable=no-name-in-module
 
 from github import Github
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 class OpenRepo:
@@ -27,6 +30,7 @@ class OpenRepo:
         g = Github(token)
         user = g.get_user()
         user.create_repo(name=repo_name, private=True)
+        print("INFO: Private repository on github is created.")
 
 
 if __name__ == "__main__":

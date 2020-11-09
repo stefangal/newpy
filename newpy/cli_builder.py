@@ -93,7 +93,7 @@ class Builder:
         try:
             if lic_type in self.license_set:
                 lic.download(self.project_path, lic_type)
-                print("LICENSE type used: ", "mit")
+                print("INFO: LICENSE type used: ", "mit")
             else:
                 lic.download(self.project_path, 'mit')
                 print("LICENSE type incorrect. Using as default: ", lic_type)
