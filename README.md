@@ -1,6 +1,7 @@
 <h1 align="center"> NewPy </h1>
 
-[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+
 
 <h3 align="center"> 
 PERSONAL NEW PYTHON PROJECT AUTOMATION PROGRAM [CLI]
@@ -10,7 +11,7 @@ PERSONAL NEW PYTHON PROJECT AUTOMATION PROGRAM [CLI]
 
 ## OVERVIEW: ##
 - [x] Open new Python project by building the structure and prepare initial files automatically via simple command line command ```startnew```. 
-- [ ] Prepare github repository
+- [x] Prepare github repository
 ## DEVELOPMENT ##
 
 ```
@@ -37,7 +38,10 @@ $ pip install startnew
 
 $ startnew
 or
-$ startnew --p <project_name> --l <license_type> --r<Github_token>
+$ startnew --p <project_name> --l <license_type> --g <Github_token>
+
+# you'll need a personal access token to open repository on Github
+# you can get one from https://github.com/settings/tokens.
 ```
 You will be asked several questions as well as you will be able to choose some default settings.
 Regarding Github repository read the **GITHUB section**.
@@ -78,14 +82,13 @@ afl3', 'agpl3', 'apache', 'bsd2', 'bsd3', 'cc0', 'cc_by', 'cc_by_nc',
 In order to open a new repository for the project via command line, first you will need to
 get/create the Github access token. 
 
-Read more here: [Instructions](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)
-
+[Instructions](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token) how to get access token.
 
 To open a repository for an existing project via command line use:
 
 ```code
 
-$ startnew --r <Github_token>
+$ startnew --g <Github_token>
 
 ```
 
