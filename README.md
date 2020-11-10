@@ -28,7 +28,7 @@ $ git clone https://github.com/stefangal/newpy
 $ cd newpy
 
 # install the requirements
-$ python install .
+$ pip install .
 
 # now you can run it
 $ startnew
