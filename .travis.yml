@@ -16,7 +16,7 @@ jobs:
 cache: pip
 install: 
     - pip install --upgrade pip  # all three OSes agree about 'pip3'
-    - pip install -r -e requirements.txt
+    - pip install -r requirements.txt
     
 
 # 'python' points to Python 2.7 on macOS but points to Python 3.8 on Linux and Windows
