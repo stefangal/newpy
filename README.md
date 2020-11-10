@@ -1,7 +1,11 @@
 <h1 align="center"> NewPy </h1>
 
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+---
 
+[![Build Status](https://travis-ci.com/stefangal/newpy.svg?branch=master)](https://travis-ci.com/stefangal/newpy)
+![GitHub](https://img.shields.io/github/license/stefangal/newpy)
+![PyPI](https://img.shields.io/pypi/v/startnew)
+![PyPI - Downloads](https://img.shields.io/pypi/dw/startnew)
 
 <h3 align="center"> 
 PERSONAL NEW PYTHON PROJECT AUTOMATION PROGRAM [CLI]
