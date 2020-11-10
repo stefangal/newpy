@@ -18,7 +18,7 @@ class TestPrepareSetup:
     """
     Testing the setup_manager
     """
-    @pytest.skip("only for local test")
+    @pytest.mark.skip
     def test_get_personaldata_local(self, ps):
         assert isinstance(ps._get_personaldata(), dict)
         assert ps._get_personaldata() == {
@@ -27,15 +27,7 @@ class TestPrepareSetup:
             'year': '2020'
         }
 
-    def test_get_personaldata(self, ps):
-        assert isinstance(ps._get_personaldata(), dict)
-        assert ps._get_personaldata() == {
-            'author': 'Travis CI User',
-            'email': 'travis@example.org',
-            'year': '2020'
-        }
-
-    @pytest.skip("only for local test")
+    @pytest.mark.skip
     def test_item_no_entry_local(self, ps):
         with mock.patch.object(builtins, 'input', lambda _: mock.call):
             line = 'name="pkg-YOUR-USERNAME-HERE",'
@@ -45,6 +37,14 @@ class TestPrepareSetup:
                             prefix="pkg-",
                             git=True) == ('pkg-YOUR-USERNAME-HERE',
                                           'pkg-StefPy')
+
+    def test_get_personaldata(self, ps):
+        assert isinstance(ps._get_personaldata(), dict)
+        assert ps._get_personaldata() == {
+            'author': 'Travis CI User',
+            'email': 'travis@example.org',
+            'year': '2020'
+        }
 
     def test_item_no_entry(self, ps):
         with mock.patch.object(builtins, 'input', lambda _: mock.call):
