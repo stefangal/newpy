@@ -17,14 +17,14 @@ jobs:
             
         script: python -m py.test -s -v 
 
-      - name: "Python 3.7.4 on macOS"
+      - name: "Python 3.8.6 on macOS"
         os: osx
         osx_image: xcode12.2 
         language: shell
         python: 3.8
         install: 
-            - pip3 install --upgrade pip  
-            - pip3 install -r requirements.txt
+            - pip install --upgrade pip  
+            - pip install -r requirements.txt
             
         script: python3 -m py.test -s -v 
     #   - name: "Python 3.8.0 on Windows"
