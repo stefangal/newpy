@@ -41,18 +41,22 @@ Use ```startnew```  to generate the folders and files in current working directo
 
 ```code
 $ pip install startnew
-
-# for arguments help run:
-$ startnew --help
-
-# run:
-$ startnew
-or
-$ startnew --p <project_name> --l <license_type> --g <Github_token>
-
-# you'll need a personal access token to open repository on Github
-# you can get one from https://github.com/settings/tokens.
 ```
+For arguments help run:
+```code
+$ startnew --help
+```
+Run:
+```code
+$ startnew
+```
+or
+```code
+$ startnew --p <project_name> --l <license_type> --g <Github_token>
+```
+You'll need a personal access token to open repository on Github
+you can get one from https://github.com/settings/tokens.
+
 You will be asked several questions as well as you will be able to choose some default settings.
 Regarding Github repository read the **GITHUB section**.
 
