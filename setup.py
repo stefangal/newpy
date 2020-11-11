@@ -3,13 +3,15 @@ from setuptools import setup
 from os import path
 
 this_directory = path.abspath(path.dirname(__file__))
+print(this_directory)
 with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
+
 with open('requirements.txt') as f:
     required = f.read().splitlines()
 
 setup(name='startnew',
-      version='1.3.1',
+      version='1.3.3',
       author='Stefan Gal',
       author_email='"stefan.mail.sk@gmail.com',
       description='Start new python project with this light cli tool',
